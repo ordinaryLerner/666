@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/image4"
+    tools:context=".Mine">
+<RelativeLayout
+    android:id="@+id/welcome"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:elevation="4dp">
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50dp"
+        android:text=""
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"/>
+    <TextView
+        android:id="@+id/hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="，你好！"
+        android:textSize="50dp"
+        android:layout_alignTop="@+id/name"
+        android:layout_toRightOf="@+id/name"
+        android:layout_gravity="center"/>
+    <ImageButton
+        android:id="@+id/changemessage"
+        android:layout_marginEnd="20dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/transparent_background"
+        android:src="@android:drawable/ic_media_next"/>
+</RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/Acanumber"
+        android:layout_below="@+id/welcome"
+        android:background="@drawable/rounded_background"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="100dp"
+        android:elevation="4dp">
+        <TextView
+            android:layout_marginStart="10dp"
+            android:id="@+id/xuehao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:text="学号："
+            android:textSize="30dp" />
+        <TextView
+            android:id="@+id/Aca_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/xuehao"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:textSize="30dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_below="@+id/Acanumber"
+        android:background="@drawable/rounded_background"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="100dp"
+        android:elevation="4dp">
+        <TextView
+            android:layout_marginStart="10dp"
+            android:id="@+id/zuoyouming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:text="座右铭："
+            android:textSize="30dp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/mottoedit"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/zuoyouming"
+                android:layout_gravity="center"
+                android:hint="请输入座右铭"
+                android:visibility="invisible"
+                android:textSize="30dp" />
+        <TextView
+            android:id="@+id/mottotext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/zuoyouming"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:textSize="30dp" />
+        <ImageButton
+            android:id="@+id/changemotto"
+            android:layout_marginEnd="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/transparent_background"
+            android:src="@drawable/edit"
+            app:tint="#000000"/>
+        <ImageButton
+            android:id="@+id/changeright"
+            android:layout_marginEnd="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/transparent_background"
+            android:src="@drawable/right"
+            android:visibility="invisible"
+            app:tint="#000000"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_background"
+        android:layout_margin="5dp"
+        android:elevation="4dp"
+        android:layout_above="@+id/bottommenu">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:text="退出登录"
+            android:textSize="30dp" />
+
+        <ImageButton
+            android:id="@+id/quit"
+            android:layout_marginEnd="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:src="@android:drawable/ic_media_next"/>
+
+    </RelativeLayout>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottommenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottommenu"/>
+
+</RelativeLayout>

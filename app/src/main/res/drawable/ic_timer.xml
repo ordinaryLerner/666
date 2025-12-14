@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- 计时器外框 -->
+    <path
+        android:strokeColor="#333"
+        android:strokeWidth="4"
+        android:pathData="M50,5A45,45 0 1,1 49.9,5A45,45 0 1,1 50,5Z"/>
+
+    <!-- 计时器顶部按钮 -->
+    <path
+        android:fillColor="#333"
+        android:pathData="M45,5 L55,5 L55,13 L45,13 Z"/>
+
+    <!-- 计时器显示屏 -->
+    <path
+        android:fillColor="#4a4a4a"
+        android:pathData="M30,20 L70,20 L70,35 L30,35 Z"/>
+
+    <!-- 指针 -->
+    <path
+        android:fillColor="#e74c3c"
+        android:pathData="M50,48.5 L70,48.5 L70,51.5 L50,51.5 Z"/>
+
+    <!-- 指针中心 -->
+    <path
+        android:fillColor="#333"
+        android:pathData="M46,46 L54,46 L54,54 L46,54 Z"/>
+
+    <!-- 底座 -->
+    <path
+        android:fillColor="#333"
+        android:pathData="M35,80 L65,80 L65,90 L35,90 Z"/>
+</vector>

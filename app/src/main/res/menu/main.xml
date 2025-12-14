@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/add"
+    android:title="添加待办事项"/>
+    <item
+        android:id="@+id/clean"
+        android:title="清除待办事项"/>
+    <item
+        android:id="@+id/reload"
+        android:title="重新加载事项"/>
+</menu>
