@@ -53,6 +53,7 @@ class Login : AppCompatActivity() {
                 var name = user?.name
                 if(name == null)
                 {name = savedusername}
+                //在协程中，表明login，明确指向login板块
                 startActivity(Intent(this@Login, Home::class.java))
                 Toast.makeText(this@Login, "登录成功,欢迎$name", Toast.LENGTH_SHORT).show()
                 finish() }
@@ -105,18 +106,11 @@ class Login : AppCompatActivity() {
                             binding.wrong.visibility = TextView.VISIBLE
                         }
                     }
-                    if (remember) {
-                        dataeditor.putBoolean("remember", binding.remember.isChecked)
-                        dataeditor.putString("username", username)
-                        dataeditor.putString("password", password)
-                        dataeditor.apply()
-                    }
-                    else{
-                        dataeditor.putBoolean("remember", false)
-                        dataeditor.putString("username", "")
-                        dataeditor.putString("password", "")
-                        dataeditor.apply()
-                    }
+                    if (remember)dataeditor.putBoolean("remember", binding.remember.isChecked)
+                    else dataeditor.putBoolean("remember", false)
+                    dataeditor.putString("username", username)
+                    dataeditor.putString("password", password)
+                    dataeditor.apply()
                 }
 
                 binding.usernameedit.doOnTextChanged { text, start, before, count ->

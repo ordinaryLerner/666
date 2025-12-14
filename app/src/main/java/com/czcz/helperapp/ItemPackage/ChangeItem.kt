@@ -36,6 +36,7 @@ class ChangeItem : AppCompatActivity() {
         database = AppDatabase.getDatabase(this)
         itemDao = database.itemDao()
         binding.dateedit.setText(intent.getStringExtra("item_date"))
+        //日期选择器
         binding.dateedit.setOnClickListener {
             showDateTimePicker()
         }
@@ -115,7 +116,6 @@ class ChangeItem : AppCompatActivity() {
                                 return@TimePickerDialog
                             }
                         }
-
                         val selectedDateTime = formatDateTime(year, month + 1, dayOfMonth, hourOfDay, minute)
                         binding.dateedit.setText(selectedDateTime)
                     },

@@ -65,7 +65,7 @@ class ItemAdd : AppCompatActivity() {
                 putExtra("date", binding.datelayout.editText.toString())
             }
             setResult(RESULT_OK, resualtIntent)
-            Toast.makeText(this, "添加成功,将于临期1小时发送提醒", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "添加成功,将于临期发送提醒", Toast.LENGTH_SHORT).show()
             finish()
         }
         binding.cancel.setOnClickListener {

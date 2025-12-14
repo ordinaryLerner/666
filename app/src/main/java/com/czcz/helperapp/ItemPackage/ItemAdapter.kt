@@ -18,7 +18,7 @@ import java.util.Locale
 private lateinit var currentusername: String
 
 class ItemAdapter(
-    var topitem: Int?,
+    var topitem: Int?,//标记置顶Item
     private val context: Home,
     private val items: MutableList<Item>,
     private val onItemDeleteListener: (Item) -> Unit,
@@ -28,7 +28,7 @@ class ItemAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item, parent, false) // 替换为你的 item 布局文件
+            .inflate(R.layout.item, parent, false) // 替换为你的 item 布局文件,不添加到父容器
         return ViewHolder(binding = ItemBinding.bind(view))
     }
 
@@ -37,10 +37,14 @@ class ItemAdapter(
         val item = items[position]
         currentusername = context.getSharedPreferences("currentusername", MODE_PRIVATE)
             .getString("currentusername", "") ?: ""
+        //作用域函数，减少重复代码
         with(holder.binding) {
             description.text = item.description
             date.text = item.date
             checkbox.isChecked = item.checkbox
+                if(topitem == item.id){
+                    itemtop.visibility = View.VISIBLE
+                }
             //判断是否超时
             if(ItemGone(item)){
                 date.setTextColor((android.graphics.Color.parseColor("#FF0000")))
@@ -66,23 +70,21 @@ class ItemAdapter(
                             deleteItemByUser(currentusername, position)
                             true
                         }
+                        //置顶操作
                         R.id.item_Top -> {
                             if(topitem != item.id) {
-                                moveItem(position)
                                 topitem = item.id
                             }
                             else{
                                 topitem = null
                             }
+                            sortItems()
                             true
                         }
                         else -> false
                     }
                 }
                 popupMenu.show()
-            }
-            if(topitem == item.id){
-                itemtop.visibility = View.VISIBLE
             }
             if (position == 0) {
                 will.visibility = View.VISIBLE
@@ -100,6 +102,7 @@ class ItemAdapter(
     }
 
     override fun getItemCount() = items.size
+
     private fun deleteItemByUser(username: String, position: Int) {
         val item = items[position]
         val intent = Intent(context, Confirm::class.java)
@@ -125,13 +128,50 @@ class ItemAdapter(
             false
         }
     }
-    private fun moveItem(position: Int) {
-        if(position > 0) {
-                val item = items.removeAt(position)
-                items.add(0, item)
-                notifyItemMoved(position, 0)
-                notifyItemRangeChanged(0, items.size)
+
+    fun sortItems() {
+        val originalItems = items.toList() // 保存原始顺序
+
+        items.sortWith { item1, item2 ->
+            when {
+                topitem != null && item1.id == topitem -> -1
+                topitem != null && item2.id == topitem -> 1
+                else -> {
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                    try {
+                        val date1 = dateFormat.parse(item1.date)
+                        val date2 = dateFormat.parse(item2.date)
+                        val currentTime = System.currentTimeMillis()
+
+                        val isExpired1 = date1.time < currentTime
+                        val isExpired2 = date2.time < currentTime
+
+                        when {
+                            isExpired1 && !isExpired2 -> 1
+                            !isExpired1 && isExpired2 -> -1
+                            else -> date1.compareTo(date2)
+                        }
+                    } catch (e: Exception) {
+                        0
+                    }
+                }
             }
+        }
+
+        // 比较前后顺序变化并发送精确通知
+        originalItems.forEachIndexed { index, item ->
+            val newIndex = items.indexOf(item)
+            if (index != newIndex) {
+                if (newIndex >= 0) {
+                    notifyItemMoved(index, newIndex)
+                } else {
+                    notifyItemRemoved(index)
+                }
+            }
+        }
+
+        // 通知可见范围内的项目更新
+        notifyItemRangeChanged(0, items.size)
     }
 }
 

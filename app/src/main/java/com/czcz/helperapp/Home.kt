@@ -53,14 +53,11 @@ class Home : AppCompatActivity() {
         itemDao = database.itemDao()
         userdatabase = UserDatabase.getDatabase(this)
         userDao = userdatabase.userDao()
-        //创建适应期实例
-        //回调模式：将删除方法调用到适配器中，不用在主线程执行删除，避免阻塞主线程
         currentusername = getSharedPreferences("currentusername", MODE_PRIVATE).getString("currentusername", "") ?: ""
+        //创建适应器实例
+        //回调模式：将删除方法调用到适配器中，不用在主线程执行删除，避免阻塞主线程
         adapter = ItemAdapter(null,this, itemList,) { item ->
-            lifecycleScope.launch {
-                itemDao.deleteAllItemsByUser(currentusername)
-                loadData()
-            }
+           loadData()
         }
         binding.recycler.adapter = adapter//设置自定义适配器作为RecyclerView的适配器
         binding.recycler.layoutManager = LinearLayoutManager(this)//设置布局管理器为线性布局
@@ -206,11 +203,11 @@ class Home : AppCompatActivity() {
     }
     //设置Item提醒
     private fun scheduleItemReminders() {
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager//获取系统闹钟服务
 
         itemList.forEach { item ->
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-            val triggerTime = dateFormat.parse(item.date)?.time ?: return@forEach
+            val triggerTime = dateFormat.parse(item.date)?.time ?: return@forEach//跳出一次循环
             val currenttime = System.currentTimeMillis()
             // 提前1小时提醒
             val reminderTime = triggerTime - (60 * 60 * 1000)
@@ -219,15 +216,17 @@ class Home : AppCompatActivity() {
                 intent.putExtra("item_id", item.id)
                 intent.putExtra("item_description", item.description)
                 intent.putExtra("item_type", "before")
+                //实例pendingintent：延迟执行
                 val pendingIntent = PendingIntent.getBroadcast(
                     this,
                     item.id.toInt(),
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
-                //Rtc_WAKEUP使用实时闹钟，并且唤醒设备
+                //Rtc_WAKEUP使用实时闹钟，并且唤醒设备，进行pendingintent发送广播信息
                 alarmManager.set(AlarmManager.RTC_WAKEUP, reminderTime, pendingIntent)
             }
+            //到期发送提醒
             if(triggerTime > currenttime){
                 val intent = Intent(this, ItemReminderReceiver::class.java)
                 intent.putExtra("item_id", item.id)
@@ -235,7 +234,7 @@ class Home : AppCompatActivity() {
                 intent.putExtra("item_type","deadline")
                 val pendingIntent = PendingIntent.getBroadcast(
                     this,
-                    item.id.toInt() + 1,
+                    item.id.toInt() + 1,//保证提醒的唯一性
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )

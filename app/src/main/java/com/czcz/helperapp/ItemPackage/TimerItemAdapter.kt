@@ -37,7 +37,5 @@ class TimerItemAdapter(private val items: List<Item>, private val context: Conte
             }
         }
     }
-
-
-    override fun getItemCount() = items.size
+    override fun getItemCount() = items.size//获取数据的数量
 }
