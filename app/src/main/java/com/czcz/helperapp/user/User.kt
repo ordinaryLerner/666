@@ -1,4 +1,4 @@
-package com.czcz.helperapp.User
+package com.czcz.helperapp.user
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

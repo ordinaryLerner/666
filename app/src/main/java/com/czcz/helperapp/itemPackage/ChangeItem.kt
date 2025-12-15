@@ -1,8 +1,7 @@
-package com.czcz.helperapp.ItemPackage
+package com.czcz.helperapp.itemPackage
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,7 +16,7 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class ChangeItem : AppCompatActivity() {
-    private lateinit var database: AppDatabase
+    private lateinit var database: ItemDatabase
     private lateinit var itemDao: ItemDao
     private lateinit var currentusername: String
     lateinit var binding: ActivityChanegItemBinding
@@ -33,7 +32,7 @@ class ChangeItem : AppCompatActivity() {
         }
         currentusername = getSharedPreferences("currentusername", MODE_PRIVATE).getString("username", "") ?: ""
         binding.descriptionedit.setText(intent.getStringExtra("item_description"))
-        database = AppDatabase.getDatabase(this)
+        database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
         binding.dateedit.setText(intent.getStringExtra("item_date"))
         //日期选择器
@@ -116,15 +115,18 @@ class ChangeItem : AppCompatActivity() {
                                 return@TimePickerDialog
                             }
                         }
+                        //Kotlin的月份范围为0-11，故月份要加1
                         val selectedDateTime = formatDateTime(year, month + 1, dayOfMonth, hourOfDay, minute)
                         binding.dateedit.setText(selectedDateTime)
                     },
+                    // 初始化时间选择器
                     currentHour,
                     currentMinute,
                     true
                 )
                 timePickerDialog.show()
             },
+            // 初始化日期选择器
             currentYear,
             currentMonth,
             currentDay

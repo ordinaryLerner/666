@@ -1,4 +1,4 @@
-package com.czcz.helperapp.User
+package com.czcz.helperapp.user
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -10,10 +10,12 @@ abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
     companion object {
+        //初始化INSTANCE
         @Volatile
         private var INSTANCE: UserDatabase? = null
 
         fun getDatabase(context: Context): UserDatabase {
+            //互斥锁，确保仅创建一个数据库实例
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,

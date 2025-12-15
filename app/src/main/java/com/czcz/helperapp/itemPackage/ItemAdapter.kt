@@ -1,13 +1,11 @@
-package com.czcz.helperapp.ItemPackage
+package com.czcz.helperapp.itemPackage
 
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
-import com.czcz.helperapp.ItemPackage.Confirm
-import com.czcz.helperapp.ItemPackage.ChangeItem
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.czcz.helperapp.Home
 import com.czcz.helperapp.R
@@ -42,15 +40,13 @@ class ItemAdapter(
             description.text = item.description
             date.text = item.date
             checkbox.isChecked = item.checkbox
-                if(topitem == item.id){
-                    itemtop.visibility = View.VISIBLE
-                }
+            if(topitem == item.id){ itemtop.visibility = View.VISIBLE }
             //判断是否超时
             if(ItemGone(item)){
-                date.setTextColor((android.graphics.Color.parseColor("#FF0000")))
+                date.setTextColor("#FF0000".toColorInt())
             }
             else{
-                date.setTextColor((android.graphics.Color.parseColor("#000000")))
+                date.setTextColor("#000000".toColorInt())
             }
             //Item设置菜单
             menuButton.setOnClickListener { view ->
@@ -58,7 +54,7 @@ class ItemAdapter(
                 popupMenu.menuInflater.inflate(R.menu.item_more, popupMenu.menu)
                 if(topitem == item.id){
                     val itemtop = popupMenu.menu.findItem(R.id.item_Top)
-                    itemtop.setTitle("取消置顶")
+                    itemtop.title="取消置顶"
                 }
                 popupMenu.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
@@ -103,6 +99,7 @@ class ItemAdapter(
 
     override fun getItemCount() = items.size
 
+    //删除对应的Item
     private fun deleteItemByUser(username: String, position: Int) {
         val item = items[position]
         val intent = Intent(context, Confirm::class.java)
@@ -110,6 +107,7 @@ class ItemAdapter(
         intent.putExtra("item_username", username)
         context.startActivity(intent)
     }
+    //修改对应的Item
     private fun ChangeItem(item: Item) {
         val intent = Intent(context, ChangeItem::class.java)
         intent.putExtra("item_id", item.id)
@@ -117,18 +115,21 @@ class ItemAdapter(
         intent.putExtra("item_date",item.date)
         context.startActivityForResult(intent, 5)
     }
+    //判断Item是否超时
     private fun ItemGone(item: Item): Boolean {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         return try {
             val date = dateFormat.parse(item.date)
-            val currentTime = System.currentTimeMillis()
-            val timeDifference = date.time - currentTime
-            timeDifference <= 0
+            if(date != null){
+                val currentTime = System.currentTimeMillis()
+                val timeDifference = date.time - currentTime
+                timeDifference <= 0
+            }
+            else{false}
         } catch (e: Exception) {
             false
         }
     }
-
     fun sortItems() {
         val originalItems = items.toList() // 保存原始顺序
 
@@ -142,22 +143,19 @@ class ItemAdapter(
                         val date1 = dateFormat.parse(item1.date)
                         val date2 = dateFormat.parse(item2.date)
                         val currentTime = System.currentTimeMillis()
-
-                        val isExpired1 = date1.time < currentTime
-                        val isExpired2 = date2.time < currentTime
-
-                        when {
-                            isExpired1 && !isExpired2 -> 1
-                            !isExpired1 && isExpired2 -> -1
-                            else -> date1.compareTo(date2)
-                        }
-                    } catch (e: Exception) {
-                        0
-                    }
+                        if (date1 != null && date2 != null) {
+                            val isExpired1 = date1.time < currentTime
+                            val isExpired2 = date2.time < currentTime
+                            when {
+                                isExpired1 && !isExpired2 -> 1
+                                !isExpired1 && isExpired2 -> -1
+                                else -> date1.compareTo(date2)
+                            }
+                        } else { 0 }
+                    }catch (e: Exception) { 0 }
                 }
             }
         }
-
         // 比较前后顺序变化并发送精确通知
         originalItems.forEachIndexed { index, item ->
             val newIndex = items.indexOf(item)
@@ -169,7 +167,6 @@ class ItemAdapter(
                 }
             }
         }
-
         // 通知可见范围内的项目更新
         notifyItemRangeChanged(0, items.size)
     }

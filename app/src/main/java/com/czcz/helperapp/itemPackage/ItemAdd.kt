@@ -1,4 +1,4 @@
-package com.czcz.helperapp.ItemPackage
+package com.czcz.helperapp.itemPackage
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -12,15 +12,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
-import com.czcz.helperapp.ItemPackage.ItemDao
 import com.czcz.helperapp.R
 import com.czcz.helperapp.databinding.ActivityItemAddBinding
 import kotlinx.coroutines.launch
-import com.czcz.helperapp.databinding.ActivityLoginBinding
 import java.util.Calendar
 
 class ItemAdd : AppCompatActivity() {
-    private lateinit var database: AppDatabase
+    private lateinit var database: ItemDatabase
     private lateinit var itemDao: ItemDao
     lateinit var binding: ActivityItemAddBinding
 
@@ -36,7 +34,7 @@ class ItemAdd : AppCompatActivity() {
         }
         val  currentUsername = getSharedPreferences("currentusername", MODE_PRIVATE)
         val currentusername = currentUsername.getString("currentusername", "") ?: ""
-        database = AppDatabase.getDatabase(this)
+        database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
         binding.dateedit.setOnClickListener {
             showDateTimePicker()

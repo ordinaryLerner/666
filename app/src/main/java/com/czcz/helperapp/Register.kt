@@ -1,18 +1,14 @@
 package com.czcz.helperapp
 
 import android.os.Bundle
-import android.content.Context
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import androidx.room.Room
-import com.czcz.helperapp.User.UserDao
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
-import com.czcz.helperapp.User.UserDatabase
-import com.czcz.helperapp.User.User
+import com.czcz.helperapp.user.UserDatabase
+import com.czcz.helperapp.user.User
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.czcz.helperapp.databinding.ActivityRegisterBinding

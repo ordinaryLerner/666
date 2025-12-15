@@ -3,17 +3,13 @@ package com.czcz.helperapp
 import android.os.Bundle
 import androidx.room.Room
 import androidx.lifecycle.lifecycleScope
-import com.czcz.helperapp.User.User
-import com.czcz.helperapp.User.UserDao
-import com.czcz.helperapp.User.UserDatabase
+import com.czcz.helperapp.user.UserDatabase
 import kotlinx.coroutines.launch
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import android.content.Intent
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
 import com.czcz.helperapp.databinding.ActivityLoginBinding
 
@@ -89,10 +85,8 @@ class Login : AppCompatActivity() {
                                 userDao.updateUser(user)
                                 val name = user.name
                                 val intent = Intent(this@Login, Home::class.java)
-                                if(name != null)
-                                Toast.makeText(this@Login, "登录成功,欢迎$name", Toast.LENGTH_SHORT).show()
-                                else
-                                Toast.makeText(this@Login, "登录成功,欢迎$username", Toast.LENGTH_SHORT).show()
+                                if(name != null) Toast.makeText(this@Login, "登录成功,欢迎$name", Toast.LENGTH_SHORT).show()
+                                else Toast.makeText(this@Login, "登录成功,欢迎$username", Toast.LENGTH_SHORT).show()
                                 if (auto) {
                                     dataeditor.putBoolean("auto", binding.auto.isChecked)
                                     dataeditor.putBoolean("skipAutoLogin", false)

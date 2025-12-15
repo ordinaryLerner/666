@@ -7,11 +7,11 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
-import com.czcz.helperapp.User.UserDatabase
+import com.czcz.helperapp.user.UserDatabase
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.czcz.helperapp.User.ChangeMessage
-import com.czcz.helperapp.User.UserDao
+import com.czcz.helperapp.user.ChangeMessage
+import com.czcz.helperapp.user.UserDao
 import com.czcz.helperapp.databinding.ActivityMineBinding
 import kotlinx.coroutines.launch
 
@@ -65,6 +65,7 @@ class Mine : AppCompatActivity() {
         binding.changemessage.setOnClickListener {
             startActivityForResult(Intent(this, ChangeMessage::class.java),3)
         }
+        //修改座右铭，切换状态
         binding.changemotto.setOnClickListener {
             binding.mottoedit.visibility = TextView.VISIBLE
             binding.mottotext.visibility = TextView.INVISIBLE
@@ -73,8 +74,7 @@ class Mine : AppCompatActivity() {
             lifecycleScope.launch {
                 val user = userDao.getUserByUsername(currentusername)
                 if (user != null) {
-                    if(user.motto.isNullOrBlank())
-                    else
+                    if(!user.motto.isNullOrBlank())
                         binding.mottoedit.setText(user.motto)
                 }
             }
@@ -108,6 +108,7 @@ class Mine : AppCompatActivity() {
         if (requestCode == 2 && resultCode == RESULT_OK) { finish() }//退出数据更改
         if (requestCode == 3 && resultCode == RESULT_OK) { refreshUserInfo() }//刷新数据
     }
+    //刷新数据
     override fun onResume() {
         super.onResume()
         lifecycleScope.launch {
@@ -116,6 +117,7 @@ class Mine : AppCompatActivity() {
             userDao.updateUser(user)
         }
     }
+    //个人信息提醒
     private fun refreshUserInfo() {
     lifecycleScope.launch {
         val user = userDao.getUserByUsername(currentusername)

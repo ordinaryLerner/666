@@ -1,10 +1,9 @@
-package com.czcz.helperapp.User
+package com.czcz.helperapp.user
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.czcz.helperapp.User.User
 
 
 @Dao

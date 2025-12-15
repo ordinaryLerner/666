@@ -11,17 +11,16 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
-import com.czcz.helperapp.ItemPackage.AppDatabase
-import com.czcz.helperapp.ItemPackage.Item
-import com.czcz.helperapp.ItemPackage.ItemDao
-import com.czcz.helperapp.User.UserDatabase
+import com.czcz.helperapp.itemPackage.ItemDatabase
+import com.czcz.helperapp.itemPackage.Item
+import com.czcz.helperapp.itemPackage.ItemDao
 import com.czcz.helperapp.databinding.ActivityTimerBinding
 import kotlinx.coroutines.launch
 
 class Timer : AppCompatActivity() {
     lateinit var binding: ActivityTimerBinding
     private lateinit var currentusername: String
-    private lateinit var database: AppDatabase
+    private lateinit var database: ItemDatabase
     private lateinit var itemDao: ItemDao
     private var countDownTimer: CountDownTimer? = null
     private var originalTime: Long = 25 * 60 * 1000
@@ -35,7 +34,7 @@ class Timer : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityTimerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        database = AppDatabase.getDatabase(this)
+        database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

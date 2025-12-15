@@ -1,26 +1,24 @@
-package com.czcz.helperapp.ItemPackage
+package com.czcz.helperapp.itemPackage
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.czcz.helperapp.ItemPackage.Item
-import com.czcz.helperapp.ItemPackage.ItemDao
 
 @Database(entities = [Item::class], version = 1)
-abstract class AppDatabase : RoomDatabase() {
+abstract class ItemDatabase : RoomDatabase() {
     abstract fun itemDao(): ItemDao
 
     companion object {
         @Volatile
-        private var INSTANCE: AppDatabase? = null//延迟加载
+        private var INSTANCE: ItemDatabase? = null//延迟加载
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Context): ItemDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,//获取上下文，联系整体代码
-                    AppDatabase::class.java,
-                    "app_database"
+                    ItemDatabase::class.java,
+                    "item_database"
                 ).build()
                 INSTANCE = instance
                 instance//更新数据库实例

@@ -1,4 +1,4 @@
-package com.czcz.helperapp.ItemPackage
+package com.czcz.helperapp.itemPackage
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -12,7 +12,7 @@ import com.czcz.helperapp.databinding.ActivityConfirmBinding
 import kotlinx.coroutines.launch
 
 class Confirm : AppCompatActivity() {
-    private lateinit var database: AppDatabase
+    private lateinit var database: ItemDatabase
     private lateinit var itemDao: ItemDao
 
     lateinit var binding: ActivityConfirmBinding
@@ -21,7 +21,7 @@ class Confirm : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityConfirmBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        database = AppDatabase.getDatabase(this)
+        database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -29,7 +29,7 @@ class Confirm : AppCompatActivity() {
             insets
         }
         binding.yes.setOnClickListener {
-            deleteItemAndFinish()
+            deleteItem()
             finish()
         }
         binding.no.setOnClickListener {
@@ -37,7 +37,7 @@ class Confirm : AppCompatActivity() {
         }
     }
 
-    private fun deleteItemAndFinish() {
+    private fun deleteItem() {
         // 从Intent中获取Item信息
         val itemId = intent.getIntExtra("item_id", -1)
         val itemusername = intent.getStringExtra("item_username")
@@ -48,7 +48,6 @@ class Confirm : AppCompatActivity() {
                 Toast.makeText(this@Confirm, "已删除该事项", Toast.LENGTH_SHORT).show()
                 // 返回并刷新列表
                 setResult(RESULT_OK)
-                finish()
             }
         }
     }

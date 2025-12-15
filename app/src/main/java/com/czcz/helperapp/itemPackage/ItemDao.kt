@@ -1,13 +1,13 @@
-package com.czcz.helperapp.ItemPackage
+package com.czcz.helperapp.itemPackage
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 
 @Dao
 interface ItemDao {
+    //suspend使函数在协程中运行，避免堵塞主线程
     //为该用户添加Item
     @Insert
     suspend fun insertItem(item: Item)
@@ -15,6 +15,7 @@ interface ItemDao {
     @Update
     suspend fun updateItem(item: Item)
 
+    //定义且使用SQL语法
     //删除该用户的所有Item
     @Query("DELETE FROM items WHERE username = :username")
     suspend fun deleteAllItemsByUser(username: String)

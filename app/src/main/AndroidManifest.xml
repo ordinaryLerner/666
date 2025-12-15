@@ -18,19 +18,19 @@
             android:enabled="true"
             android:exported="false" />
         <activity
-            android:name=".ItemPackage.Confirm"
+            android:name=".itemPackage.Confirm"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
-            android:name=".ItemPackage.ChangeItem"
+            android:name=".itemPackage.ChangeItem"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
-            android:name=".User.ChangeMessage"
+            android:name=".user.ChangeMessage"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
-            android:name=".User.CompleteMessage"
+            android:name=".user.CompleteMessage"
             android:exported="false"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Dialog" />
@@ -45,20 +45,20 @@
             android:name=".Timer"
             android:exported="false" />
         <activity
-            android:name=".User.UserDao"
+            android:name=".user.UserDao"
             android:exported="false" />
         <activity
-            android:name=".User.UserDatabase"
+            android:name=".user.UserDatabase"
             android:exported="false" />
         <activity
-            android:name=".User.User"
+            android:name=".user.User"
             android:exported="false" />
         <activity
-            android:name=".ItemPackage.Complete"
+            android:name=".itemPackage.Complete"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
-            android:name=".ItemPackage.ItemAdd"
+            android:name=".itemPackage.ItemAdd"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity

@@ -1,4 +1,4 @@
-package com.czcz.helperapp.ItemPackage
+package com.czcz.helperapp.itemPackage
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -12,7 +12,7 @@ import com.czcz.helperapp.databinding.ActivityCompleteBinding
 import kotlinx.coroutines.launch
 
 class Complete : AppCompatActivity() {
-    private lateinit var database: AppDatabase
+    private lateinit var database: ItemDatabase
     private lateinit var itemDao: ItemDao
 
     lateinit var binding: ActivityCompleteBinding
@@ -21,7 +21,7 @@ class Complete : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityCompleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        database = AppDatabase.getDatabase(this)
+        database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

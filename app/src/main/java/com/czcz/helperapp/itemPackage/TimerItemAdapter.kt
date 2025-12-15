@@ -6,8 +6,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.czcz.helperapp.ItemPackage.Complete
-import com.czcz.helperapp.ItemPackage.Item
+import com.czcz.helperapp.itemPackage.Complete
+import com.czcz.helperapp.itemPackage.Item
 import com.czcz.helperapp.databinding.TimerLayoutBinding
 
 class TimerItemAdapter(private val items: List<Item>, private val context: Context) : RecyclerView.Adapter<TimerItemAdapter.ViewHolder>() {

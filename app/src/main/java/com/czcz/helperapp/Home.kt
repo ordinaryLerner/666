@@ -1,35 +1,29 @@
 package com.czcz.helperapp
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.os.Bundle
 import android.content.Intent
-import android.os.Build
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.czcz.helperapp.databinding.ActivityHomeBinding
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.czcz.helperapp.ItemPackage.AppDatabase
-import com.czcz.helperapp.ItemPackage.Item
-import com.czcz.helperapp.ItemPackage.ItemAdapter
-import com.czcz.helperapp.ItemPackage.ItemAdd
-import com.czcz.helperapp.ItemPackage.ItemDao
-import com.czcz.helperapp.User.User
-import com.czcz.helperapp.User.CompleteMessage
-import com.czcz.helperapp.User.UserDao
-import com.czcz.helperapp.User.UserDatabase
+import com.czcz.helperapp.itemPackage.ItemDatabase
+import com.czcz.helperapp.itemPackage.Item
+import com.czcz.helperapp.itemPackage.ItemAdapter
+import com.czcz.helperapp.itemPackage.ItemAdd
+import com.czcz.helperapp.itemPackage.ItemDao
+import com.czcz.helperapp.user.CompleteMessage
+import com.czcz.helperapp.user.UserDao
+import com.czcz.helperapp.user.UserDatabase
 import kotlinx.coroutines.launch
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -37,7 +31,7 @@ import java.util.Locale
 class Home : AppCompatActivity() {
     private lateinit var currentusername: String
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var database: AppDatabase
+    private lateinit var database: ItemDatabase
     private lateinit var itemDao: ItemDao
     private lateinit var userDao: UserDao
     private lateinit var userdatabase: UserDatabase
@@ -49,7 +43,7 @@ class Home : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // 初始化数据库
-        database = AppDatabase.getDatabase(this)
+        database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
         userdatabase = UserDatabase.getDatabase(this)
         userDao = userdatabase.userDao()

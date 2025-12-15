@@ -1,4 +1,4 @@
-package com.czcz.helperapp.ItemPackage
+package com.czcz.helperapp.itemPackage
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
