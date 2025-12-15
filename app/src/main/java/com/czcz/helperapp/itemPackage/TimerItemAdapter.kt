@@ -23,8 +23,8 @@ class TimerItemAdapter(private val items: List<Item>, private val context: Conte
         val item = items[position]
         val currentusername = context.getSharedPreferences("currentusername", MODE_PRIVATE)
             .getString("currentusername", "") ?: ""
-        with(holder.binding) {
 
+        with(holder.binding) {
             description.text = item.description
             checkbox.isChecked = item.checkbox
             checkbox.setOnCheckedChangeListener { _, isChecked ->

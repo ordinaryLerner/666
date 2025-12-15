@@ -28,10 +28,12 @@ class Confirm : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         binding.yes.setOnClickListener {
             deleteItem()
             finish()
         }
+
         binding.no.setOnClickListener {
             finish()
         }

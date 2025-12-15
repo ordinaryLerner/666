@@ -31,10 +31,13 @@ class ChangeItem : AppCompatActivity() {
             insets
         }
         currentusername = getSharedPreferences("currentusername", MODE_PRIVATE).getString("username", "") ?: ""
+
         binding.descriptionedit.setText(intent.getStringExtra("item_description"))
+        binding.dateedit.setText(intent.getStringExtra("item_date"))
+
         database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
-        binding.dateedit.setText(intent.getStringExtra("item_date"))
+
         //日期选择器
         binding.dateedit.setOnClickListener {
             showDateTimePicker()
@@ -45,14 +48,17 @@ class ChangeItem : AppCompatActivity() {
                 Toast.makeText(this, "请填写具体内容", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
             if(binding.datelayout.editText?.text.isNullOrBlank()){
                 binding.datelayout.error = "请选择日期"
                 Toast.makeText(this, "请选择日期", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
             lifecycleScope.launch {
                 val itemId = intent.getIntExtra("item_id", -1)
                 val item = itemDao.getItemById(itemId)
+
                 if(item !=  null) {
                     val updateditem = item.copy(
                         description = binding.descriptionedit.text.toString(),
@@ -60,17 +66,21 @@ class ChangeItem : AppCompatActivity() {
                     )
                     itemDao.updateItem(updateditem)
                 }
+
             }
             Toast.makeText(this, "修改成功,将于临期1小时发送提醒", Toast.LENGTH_SHORT).show()
             finish()
         }
+
         binding.cancel.setOnClickListener {
             finish()
         }
+
         binding.descriptionedit.doOnTextChanged { text, start, before, count ->
             binding.descriptionlayout.error = null
             binding.datelayout.error = null
         }
+
         binding.dateedit.doOnTextChanged { text, start, before, count ->
             binding.descriptionlayout.error = null
             binding.datelayout.error = null

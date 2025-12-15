@@ -29,15 +29,17 @@ class ItemReminderReceiver : BroadcastReceiver() {
             )
             notificationManager.createNotificationChannel(channel)
         }
+
         val contextText = when (type) {
             "before" -> "您的事项 $description 准备到截止时间了！"
             "deadline" -> "您的事项 $description 已经到截止时间了！"
             else -> ""
         }
+
         val notification = NotificationCompat.Builder(context, "item_reminder")
             .setContentTitle("待办事项提醒")
             .setContentText(contextText)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)//设置图标
+            .setSmallIcon(R.drawable.ic_notification)//设置图标
             .setAutoCancel(true)//设置点击后自动取消
             .build()
 

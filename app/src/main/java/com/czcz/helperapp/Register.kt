@@ -21,16 +21,20 @@ class Register : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         userDatabase = Room.databaseBuilder(
             applicationContext,
             UserDatabase::class.java,
             "user_database"
         ).build()
+
         binding.wrong.visibility = View.GONE
+
         binding.register.setOnClickListener {
             val username = binding.usernameedit.text.toString()
             val password = binding.passwordedit.text.toString()
             val confirmPassword = binding.confirmedit.text.toString()
+
             when {
                 username.isEmpty() -> {
                     binding.usernamelayout.error = "请输入账户"
@@ -44,17 +48,21 @@ class Register : AppCompatActivity() {
                     binding.confirmlayout.error = "请再次输入密码"
                 }
             }
+
             if (password != confirmPassword) {
                 binding.confirmlayout.error = "两次输入的密码不一致"
             }
+
             if (password == confirmPassword && username.isNotEmpty() && password.isNotEmpty()) {
                 lifecycleScope.launch {
                     val user = User(username = username, password = password)
                     val userExists = userDatabase.userDao().getUserByUsername( username)
+
                     if(userExists != null) {
                         binding.wrong.visibility = View.VISIBLE
                         return@launch
                     }
+
                     else {
                         binding.wrong.visibility = View.GONE
                         userDatabase.userDao().insertUser(user)
@@ -63,13 +71,16 @@ class Register : AppCompatActivity() {
                     }
                 }
             }
+
             //输入时关闭错误提示
             binding.passwordedit.doOnTextChanged { text, start, before, count ->
                 binding.passwordlayout.error = null
             }
+
             binding.confirmedit.doOnTextChanged { text, start, before, count ->
                 binding.confirmlayout.error = null
             }
+
             binding.usernameedit.doOnTextChanged { text, start, before, count ->
                 binding.usernamelayout.error = null
             }

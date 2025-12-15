@@ -45,14 +45,18 @@ class Home : AppCompatActivity() {
         // 初始化数据库
         database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
+
         userdatabase = UserDatabase.getDatabase(this)
         userDao = userdatabase.userDao()
+
         currentusername = getSharedPreferences("currentusername", MODE_PRIVATE).getString("currentusername", "") ?: ""
+
         //创建适应器实例
         //回调模式：将删除方法调用到适配器中，不用在主线程执行删除，避免阻塞主线程
         adapter = ItemAdapter(null,this, itemList,) { item ->
            loadData()
         }
+
         binding.recycler.adapter = adapter//设置自定义适配器作为RecyclerView的适配器
         binding.recycler.layoutManager = LinearLayoutManager(this)//设置布局管理器为线性布局
 
@@ -61,6 +65,7 @@ class Home : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets//实现自适应窗口，避免内容被遮挡
         }
+
         loadData()
         judge()
         checkUserInfoComplete(currentusername)
@@ -104,7 +109,7 @@ class Home : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.add -> {
-                startActivityForResult(Intent(this, ItemAdd::class.java), 1)
+                startActivity(Intent(this, ItemAdd::class.java))
                 loadData()
             }
 
@@ -130,17 +135,19 @@ class Home : AppCompatActivity() {
             val date2 = dateFormat.parse(dateTime2)
             val currentTime = System.currentTimeMillis()
 
-            val isExpired1 = date1.time < currentTime
-            val isExpired2 = date2.time < currentTime
+            if(date1!=null&&date2!=null){
+                val isExpired1 = date1.time < currentTime
+                val isExpired2 = date2.time < currentTime
 
-            when {
-                isExpired1 && !isExpired2 -> 1       // item1过期，item2未过期，item1排在后面
-                !isExpired1 && isExpired2 -> -1      // item1未过期，item2过期，item2排在后面
-                else -> date1.compareTo(date2)       // 都过期或都未过期，按时间排序
+                when {
+                    isExpired1 && !isExpired2 -> 1       // item1过期，item2未过期，item1排在后面
+                    !isExpired1 && isExpired2 -> -1      // item1未过期，item2过期，item2排在后面
+                    else -> date1.compareTo(date2)       // 都过期或都未过期，按时间排序
+                }
             }
-        } catch (e: Exception) {//捕获可能出现的错误
-            0//在出现问题是返回0
-        }
+            else { 0 }
+        } catch (e: Exception) //捕获可能出现的错误
+        { 0 }//在出现问题是返回0
     }
 
     //重新加载数据
@@ -163,7 +170,8 @@ class Home : AppCompatActivity() {
     fun judge() {
         if (itemList.isEmpty()) {
             binding.hint.visibility = View.VISIBLE
-        } else {
+        }
+        else {
             binding.hint.visibility = View.GONE
         }
     }
@@ -179,18 +187,13 @@ class Home : AppCompatActivity() {
     private fun checkUserInfoComplete(username: String) {
         lifecycleScope.launch {
             val user = userDao.getUserByUsername(username)
+
             if (user == null ||
                 user.name.isNullOrEmpty() ||
                 user.Aca_number.isNullOrEmpty() ||
-                user.gender.isNullOrEmpty()
-            ) {
+                user.gender.isNullOrEmpty())
+            {
                 val intent = Intent(this@Home, CompleteMessage::class.java)
-                //确定该Avtivity为高优先级
-                intent.addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK or//新任务
-                            Intent.FLAG_ACTIVITY_CLEAR_TOP or//清除栈顶
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP//仅有一个
-                )
                 startActivity(intent)
             }
         }
@@ -205,11 +208,13 @@ class Home : AppCompatActivity() {
             val currenttime = System.currentTimeMillis()
             // 提前1小时提醒
             val reminderTime = triggerTime - (60 * 60 * 1000)
+
             if (reminderTime > currenttime) {
                 val intent = Intent(this, ItemReminderReceiver::class.java)
                 intent.putExtra("item_id", item.id)
                 intent.putExtra("item_description", item.description)
                 intent.putExtra("item_type", "before")
+
                 //实例pendingintent：延迟执行
                 val pendingIntent = PendingIntent.getBroadcast(
                     this,
@@ -226,6 +231,7 @@ class Home : AppCompatActivity() {
                 intent.putExtra("item_id", item.id)
                 intent.putExtra("item_description", item.description)
                 intent.putExtra("item_type","deadline")
+
                 val pendingIntent = PendingIntent.getBroadcast(
                     this,
                     item.id.toInt() + 1,//保证提醒的唯一性

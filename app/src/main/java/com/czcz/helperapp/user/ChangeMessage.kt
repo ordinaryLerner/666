@@ -27,18 +27,24 @@ class ChangeMessage : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         userdatabase = UserDatabase.getDatabase(this)
         userDao = userdatabase.userDao()
+
         currentusername = getSharedPreferences("currentusername", MODE_PRIVATE).getString("currentusername", "") ?: ""
         currentpassword = getSharedPreferences("currentpassword", MODE_PRIVATE).getString("currentpassword", "") ?: ""
+
         lifecycleScope.launch {
             val user = userDao.getUserByUsername(currentusername)
             if(user != null) {
                 binding.nameedit.setText(user.name)
                 binding.AcaNumberedit.setText(user.Aca_number)
+
                 if (user.gender == "男") {
                     binding.male.isChecked = true
-                } else if (user.gender == "女") {
+                }
+
+                else if (user.gender == "女") {
                     binding.female.isChecked = true
                 }
             }
@@ -46,22 +52,26 @@ class ChangeMessage : AppCompatActivity() {
         binding.complete.setOnClickListener {
             val name = binding.nameedit.text.toString()  //
             val Aca_number = binding.AcaNumberedit.text.toString()
-            val gender = if(binding.male.isChecked) {
-                "男"
-            }
-                         else if(binding.female.isChecked) {
-                "女"
-            }
-                         else {
-                "未填写"
-            }
+            val gender = if(binding.male.isChecked) { "男" }
+                         else if(binding.female.isChecked) { "女" }
+                         else { "未填写" }
+
             binding.namelayout.error = null
             binding.AcaNumberlayout.error = null
+
             when{
-                name.isEmpty() -> binding.namelayout.error = "请输入姓名"
-                Aca_number.isEmpty() -> binding.AcaNumberlayout.error = "请输入学号"
-                gender == "未填写" -> Toast.makeText(this, "请选择性别", Toast.LENGTH_SHORT).show()
-                Aca_number.length != 10 -> binding.AcaNumberlayout.error = "请输入正确的学号"
+                name.isEmpty() ->
+                    binding.namelayout.error = "请输入姓名"
+
+                Aca_number.isEmpty() ->
+                    binding.AcaNumberlayout.error = "请输入学号"
+
+                gender == "未填写" ->
+                    Toast.makeText(this, "请选择性别", Toast.LENGTH_SHORT).show()
+
+                Aca_number.length != 10 ->
+                    binding.AcaNumberlayout.error = "请输入正确的学号"
+
                 name.isNotEmpty() && Aca_number.isNotEmpty() -> {
                     lifecycleScope.launch {
                         val user = userDao.getUserByUsername(currentusername)
@@ -73,9 +83,9 @@ class ChangeMessage : AppCompatActivity() {
                             setResult(RESULT_OK)
                             Toast.makeText(this@ChangeMessage, "修改成功", Toast.LENGTH_SHORT).show()
                             finish()
+                        }
                     }
                 }
-            }
             }
         }
         binding.cancel.setOnClickListener {

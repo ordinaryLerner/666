@@ -8,6 +8,7 @@ import androidx.room.Update
 
 @Dao
 interface UserDao {
+
     // 创建一个查询所有用户的方法
     @Query("SELECT * FROM users")
     suspend fun getAllUsers(): List<User>

@@ -27,36 +27,38 @@ class CompleteMessage : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         userdatabase = UserDatabase.getDatabase(this)
         userDao = userdatabase.userDao()
+
         currentusername = getSharedPreferences("currentusername", MODE_PRIVATE).getString("currentusername", "") ?: ""
         currentpassword = getSharedPreferences("currentpassword", MODE_PRIVATE).getString("currentpassword", "") ?: ""
+
         binding.complete.setOnClickListener {
             val name = binding.nameedit.text.toString()  //
             val Aca_number = binding.AcaNumberedit.text.toString()
-            val gender = if(binding.male.isChecked) {
-                "男"
-            }
-                         else if(binding.female.isChecked) {
-                "女"
-            }
-                         else {
-                "未填写"
-            }
+            val gender = if(binding.male.isChecked) { "男" }
+                         else if(binding.female.isChecked) { "女" }
+                         else { "未填写" }
+
             binding.namelayout.error = null
             binding.AcaNumberlayout.error = null
+
             if(name.isEmpty()){
                 binding.namelayout.error = "请输入姓名"
                 return@setOnClickListener
             }
+
             if(Aca_number.isEmpty()){
                 binding.AcaNumberlayout.error = "请输入学号"
                 return@setOnClickListener
             }
+
             if(gender == "未填写") {
                 Toast.makeText(this, "请选择性别", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
                 lifecycleScope.launch {
                     val user = userDao.getUserByUsername(currentusername)
                     if(user != null) {

@@ -30,10 +30,14 @@ class Mine : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         userdatabase = UserDatabase.getDatabase(this)
         userDao = userdatabase.userDao()
+
         currentusername = getSharedPreferences("currentusername", MODE_PRIVATE).getString("currentusername", "") ?: ""
+
         refreshUserInfo()
+
         binding.bottommenu.selectedItemId = R.id.mine
         binding.bottommenu.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -43,12 +47,14 @@ class Mine : AppCompatActivity() {
                         finish()
                     }
                 }
+
                 R.id.timer -> {
                     if (this::class.java != Timer::class.java) {
                         startActivity(Intent(this, Timer::class.java))
                         finish()
                     }
                 }
+
                 R.id.mine -> {
                     if (this::class.java != Mine::class.java) {
                         startActivity(Intent(this, Mine::class.java))
@@ -60,41 +66,51 @@ class Mine : AppCompatActivity() {
         }
         //跳转退出确认
         binding.quit.setOnClickListener {
-            startActivityForResult(Intent(this, Quit::class.java),2)
+            startActivity(Intent(this, Quit::class.java))
+            finish()
         }
+
         binding.changemessage.setOnClickListener {
-            startActivityForResult(Intent(this, ChangeMessage::class.java),3)
+            startActivity(Intent(this, ChangeMessage::class.java))
         }
+
         //修改座右铭，切换状态
         binding.changemotto.setOnClickListener {
             binding.mottoedit.visibility = TextView.VISIBLE
             binding.mottotext.visibility = TextView.INVISIBLE
             binding.changemotto.visibility = TextView.INVISIBLE
             binding.changeright.visibility = TextView.VISIBLE
+
             lifecycleScope.launch {
                 val user = userDao.getUserByUsername(currentusername)
+
                 if (user != null) {
                     if(!user.motto.isNullOrBlank())
                         binding.mottoedit.setText(user.motto)
                 }
             }
         }
+
         binding.changeright.setOnClickListener {
             val motto = binding.mottoedit.text.toString()
+
             lifecycleScope.launch {
                 val user = userDao.getUserByUsername(currentusername)
+
                 if (user != null) {
                         if (motto != user.motto) {
                             user.motto = motto
                             userDao.updateUser(user)
                             if (user.motto.isNullOrBlank())
                                 binding.mottotext.text = "未设置座右铭"
+
                             else {
                                 binding.mottotext.text = motto
                                 Toast.makeText(this@Mine, "修改成功", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
+
                     binding.mottotext.visibility = TextView.VISIBLE
                     binding.mottoedit.visibility = TextView.INVISIBLE
                     binding.changemotto.visibility = TextView.VISIBLE
@@ -102,12 +118,7 @@ class Mine : AppCompatActivity() {
             }
         }
     }
-    //检测是否退出
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 2 && resultCode == RESULT_OK) { finish() }//退出数据更改
-        if (requestCode == 3 && resultCode == RESULT_OK) { refreshUserInfo() }//刷新数据
-    }
+
     //刷新数据
     override fun onResume() {
         super.onResume()

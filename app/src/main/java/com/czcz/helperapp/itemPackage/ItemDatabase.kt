@@ -14,6 +14,7 @@ abstract class ItemDatabase : RoomDatabase() {
         private var INSTANCE: ItemDatabase? = null//延迟加载
 
         fun getDatabase(context: Context): ItemDatabase {
+            //互斥锁
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,//获取上下文，联系整体代码

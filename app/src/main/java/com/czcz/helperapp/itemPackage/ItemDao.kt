@@ -19,13 +19,16 @@ interface ItemDao {
     //删除该用户的所有Item
     @Query("DELETE FROM items WHERE username = :username")
     suspend fun deleteAllItemsByUser(username: String)
+
     //删除该Item
     @Query("DELETE FROM items WHERE id = :id")
     suspend fun deleteItem(id: Int)
+
     //获取该Item
     @Query("SELECT * FROM items WHERE id = :id")
     suspend fun getItemById(id: Int): Item?
-    //获取用户的所有Item
+
+    //获取用户的Item
     @Query("SELECT * FROM items WHERE username = :username")
     suspend fun getItemByUser(username: String): Item?
 
@@ -35,6 +38,4 @@ interface ItemDao {
 
     @Query("SELECT * FROM items WHERE username = :username")
     suspend fun getAllItemsByUser(username: String): List<Item>
-
-
 }

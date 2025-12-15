@@ -20,14 +20,15 @@ class Quit : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         binding.yes.setOnClickListener {
-            val intent = Intent(this, Login::class.java)
             intent.putExtra("跳过自动登录", true)
-            startActivity(intent)
-            setResult(RESULT_OK)
+            startActivity(Intent(this, Login::class.java))
             finish()
         }
+
         binding.no.setOnClickListener {
+            startActivity(Intent(this, Mine::class.java))
             finish()
         }
     }

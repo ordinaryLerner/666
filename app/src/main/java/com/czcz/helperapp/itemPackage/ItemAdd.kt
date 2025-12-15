@@ -32,47 +32,59 @@ class ItemAdd : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         val  currentUsername = getSharedPreferences("currentusername", MODE_PRIVATE)
         val currentusername = currentUsername.getString("currentusername", "") ?: ""
+
         database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
+
         binding.dateedit.setOnClickListener {
             showDateTimePicker()
         }
+
         binding.add.setOnClickListener {
             if(binding.descriptionlayout.editText?.text.isNullOrBlank()){
                 binding.descriptionlayout.error = "请填写具体内容"
                 Toast.makeText(this, "请填写具体内容", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
             if(binding.datelayout.editText?.text.isNullOrBlank()){
                 binding.datelayout.error = "请选择日期"
                 Toast.makeText(this, "请选择日期", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
             val item = Item(
                 description = binding.descriptionlayout.editText?.text.toString(),
                 date = binding.datelayout.editText?.text.toString(),
                 username = currentusername
             )
+
             lifecycleScope.launch {
                 itemDao.insertItem(item)
             }
+
             val resualtIntent = Intent().apply {
                 putExtra("description", binding.descriptionlayout.editText.toString())
                 putExtra("date", binding.datelayout.editText.toString())
             }
+
             setResult(RESULT_OK, resualtIntent)
             Toast.makeText(this, "添加成功,将于临期发送提醒", Toast.LENGTH_SHORT).show()
             finish()
         }
+
         binding.cancel.setOnClickListener {
             finish()
         }
+
         binding.descriptionedit.doOnTextChanged { text, start, before, count ->
             binding.descriptionlayout.error = null
             binding.datelayout.error = null
         }
+
         binding.dateedit.doOnTextChanged { text, start, before, count ->
             binding.descriptionlayout.error = null
             binding.datelayout.error = null
@@ -112,6 +124,7 @@ class ItemAdd : AppCompatActivity() {
                 { _, hourOfDay, minute ->
                     // 如果选择的是当天，需要检查时间是否在当前时间之后
                     if (year == currentYear && month == currentMonth && dayOfMonth == currentDay) {
+
                         if (hourOfDay < currentHour || (hourOfDay == currentHour && minute <= currentMinute)) {
                             // 时间早于或等于当前时间，重新选择时间
                             showDateTimePicker()
@@ -133,8 +146,9 @@ class ItemAdd : AppCompatActivity() {
         currentMonth,
         currentDay
     )
+
         datePickerDialog.datePicker.minDate = calendar.timeInMillis
-    datePickerDialog.show()
+        datePickerDialog.show()
 }
 
     //格式化时间
