@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelperApp.NoActionBar">
         <activity
+            android:name=".Classify"
+            android:exported="false" />
+        <activity
             android:name=".Statement"
             android:exported="false" />
 

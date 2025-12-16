@@ -11,5 +11,6 @@ data class Item(
     val description: String,
     val date: String,
     val checkbox: Boolean = false,
-    val itemTop: Boolean = false
+    val itemTop: Boolean = false,
+    val itemType: String?
 )

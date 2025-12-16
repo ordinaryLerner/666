@@ -59,7 +59,8 @@ class ItemAdd : AppCompatActivity() {
             val item = Item(
                 description = binding.descriptionlayout.editText?.text.toString(),
                 date = binding.datelayout.editText?.text.toString(),
-                username = currentusername
+                username = currentusername,
+                itemType = "All"
             )
 
             lifecycleScope.launch {

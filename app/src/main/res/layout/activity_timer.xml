@@ -17,7 +17,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/title"
+            android:layout_toStartOf="@+id/title"
             android:background="@drawable/ic_timericon" />
         <TextView
             android:id="@+id/title"
@@ -28,10 +28,11 @@
             android:textSize="40sp"/>
     </RelativeLayout>
 <RelativeLayout
+    android:id="@+id/statuslayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:layout_above="@+id/timerEdit">
+    android:layout_below="@+id/topmenu">
     <TextView
         android:id="@+id/statusText"
         android:layout_width="wrap_content"
@@ -41,7 +42,7 @@
 
     <ImageButton
         android:id="@+id/modelchange"
-        android:layout_toRightOf="@+id/statusText"
+        android:layout_toEndOf="@+id/statusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -53,8 +54,7 @@
         android:id="@+id/timerEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonLayout"
-        android:layout_marginBottom="66dp">
+        android:layout_below="@+id/statuslayout">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="wrap_content"
@@ -64,16 +64,16 @@
             android:id="@+id/input1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/colon"
+            android:layout_toStartOf="@+id/colon"
             android:inputType="number"
-            android:textSize="100dp" />
+            android:textSize="120sp" />
 
         <TextView
             android:id="@+id/minutes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/colon"
-            android:textSize="120dp" />
+            android:layout_toStartOf="@+id/colon"
+            android:textSize="120sp" />
 
         <TextView
             android:id="@+id/colon"
@@ -82,7 +82,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text=":"
-            android:textSize="100dp" />
+            android:textSize="100sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="wrap_content"
@@ -92,36 +92,37 @@
             android:id="@+id/input2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/colon"
+            android:layout_toEndOf="@+id/colon"
             android:inputType="number"
-            android:textSize="100dp" />
+            android:textSize="120sp" />
 
         <TextView
             android:id="@+id/seconds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/colon"
-            android:textSize="120dp" />
+            android:layout_toEndOf="@+id/colon"
+            android:textSize="120sp" />
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/buttonLayout"
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/timerEdit"
+        android:layout_centerHorizontal="true" style="?android:attr/buttonBarStyle"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/controlButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content" style="?android:attr/buttonBarStyle"
             android:text="开始"
             android:layout_marginEnd="16dp" />
         <Button
             android:id="@+id/resetButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content" style="?android:attr/buttonBarStyle"
             android:text="重置" />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView

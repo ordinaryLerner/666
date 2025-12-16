@@ -12,13 +12,13 @@
     android:id="@+id/welcome"
     android:layout_margin="10dp"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="120dp"
     android:elevation="4dp">
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="50dp"
+        android:textSize="40sp"
         android:text=""
         android:layout_centerVertical="true"
         android:layout_marginStart="20dp"/>
@@ -27,16 +27,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="，你好！"
-        android:textSize="50dp"
+        android:textSize="40sp"
         android:layout_alignTop="@+id/name"
-        android:layout_toRightOf="@+id/name"
+        android:layout_toEndOf="@+id/name"
         android:layout_gravity="center"/>
     <ImageButton
         android:id="@+id/changemessage"
-        android:layout_marginEnd="20dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:background="@drawable/transparent_background"
         android:src="@android:drawable/ic_media_next"/>
@@ -47,8 +46,10 @@
         android:layout_below="@+id/welcome"
         android:background="@drawable/rounded_background"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:layout_height="100dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="80dp"
         android:elevation="4dp">
         <TextView
             android:layout_marginStart="10dp"
@@ -58,23 +59,22 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:text="学号："
-            android:textSize="30dp" />
+            android:textSize="20sp" />
         <TextView
             android:id="@+id/Aca_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/xuehao"
+            android:layout_toEndOf="@+id/xuehao"
             android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_below="@+id/Acanumber"
         android:background="@drawable/rounded_background"
         android:layout_width="match_parent"
         android:layout_margin="10dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:elevation="4dp">
         <TextView
             android:layout_marginStart="10dp"
@@ -84,42 +84,39 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:text="座右铭："
-            android:textSize="30dp" />
+            android:textSize="20sp" />
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/mottoedit"
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/zuoyouming"
+                android:layout_toEndOf="@+id/zuoyouming"
                 android:layout_gravity="center"
                 android:hint="请输入座右铭"
                 android:visibility="invisible"
-                android:textSize="30dp" />
+                android:textSize="20sp" />
         <TextView
             android:id="@+id/mottotext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/zuoyouming"
+            android:layout_toEndOf="@+id/zuoyouming"
             android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:textSize="30dp" />
+            android:textSize="20sp" />
         <ImageButton
             android:id="@+id/changemotto"
-            android:layout_marginEnd="20dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@drawable/transparent_background"
             android:src="@drawable/ic_edit"
             app:tint="#000000"/>
         <ImageButton
             android:id="@+id/changeright"
-            android:layout_marginEnd="20dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@drawable/transparent_background"
             android:src="@drawable/ic_right"
@@ -144,14 +141,14 @@
             android:layout_gravity="center"
             android:layout_marginStart="20dp"
             android:text="前往大本营"
-            android:textSize="30dp" />
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/intent"
             android:layout_marginEnd="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@color/white"
             android:src="@android:drawable/ic_media_next"/>
@@ -175,14 +172,14 @@
             android:layout_gravity="center"
             android:layout_marginStart="20dp"
             android:text="关于App"
-            android:textSize="30dp" />
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/statement"
             android:layout_marginEnd="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@color/white"
             android:src="@android:drawable/ic_media_next"/>
@@ -206,14 +203,14 @@
             android:layout_gravity="center"
             android:layout_marginStart="20dp"
             android:text="退出登录"
-            android:textSize="30dp" />
+            android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/quit"
             android:layout_marginEnd="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@color/white"
             android:src="@android:drawable/ic_media_next"/>
