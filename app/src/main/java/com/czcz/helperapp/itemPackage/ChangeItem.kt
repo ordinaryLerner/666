@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.czcz.helperapp.R
-import com.czcz.helperapp.databinding.ActivityChanegItemBinding
+import com.czcz.helperapp.databinding.ActivityChangeItemBinding
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -19,11 +19,11 @@ class ChangeItem : AppCompatActivity() {
     private lateinit var database: ItemDatabase
     private lateinit var itemDao: ItemDao
     private lateinit var currentusername: String
-    lateinit var binding: ActivityChanegItemBinding
+    lateinit var binding: ActivityChangeItemBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityChanegItemBinding.inflate(layoutInflater)
+        binding = ActivityChangeItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

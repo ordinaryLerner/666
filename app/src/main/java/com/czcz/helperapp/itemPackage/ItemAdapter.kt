@@ -9,7 +9,7 @@ import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.czcz.helperapp.Home
 import com.czcz.helperapp.R
-import com.czcz.helperapp.databinding.ItemBinding
+import com.czcz.helperapp.databinding.ItemLayoutBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,12 +22,12 @@ class ItemAdapter(
     private val onItemDeleteListener: (Item) -> Unit,
 ) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
     // ...
-    class ViewHolder(val binding: ItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item, parent, false) // 替换为你的 item 布局文件,不添加到父容器
-        return ViewHolder(binding = ItemBinding.bind(view))
+            .inflate(R.layout.item_layout, parent, false) // 替换为你的 item 布局文件,不添加到父容器
+        return ViewHolder(binding = ItemLayoutBinding.bind(view))
     }
 
     // 绑定数据

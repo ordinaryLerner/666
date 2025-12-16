@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/image4"
+    android:background="@drawable/mine"
     tools:context=".Mine">
 <RelativeLayout
     android:id="@+id/welcome"
@@ -112,7 +112,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/transparent_background"
-            android:src="@drawable/edit"
+            android:src="@drawable/ic_edit"
             app:tint="#000000"/>
         <ImageButton
             android:id="@+id/changeright"
@@ -127,8 +127,70 @@
             app:tint="#000000"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/intentlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_background"
+        android:layout_margin="5dp"
+        android:elevation="4dp"
+        android:layout_above="@+id/statementlayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:text="前往大本营"
+            android:textSize="30dp" />
+
+        <ImageButton
+            android:id="@+id/intent"
+            android:layout_marginEnd="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:src="@android:drawable/ic_media_next"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/statementlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_background"
+        android:layout_margin="5dp"
+        android:elevation="4dp"
+        android:layout_above="@+id/quitlayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:text="关于App"
+            android:textSize="30dp" />
+
+        <ImageButton
+            android:id="@+id/statement"
+            android:layout_marginEnd="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:src="@android:drawable/ic_media_next"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/quitlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

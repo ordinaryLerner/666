@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/image1"
+    android:background="@drawable/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login">

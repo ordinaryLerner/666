@@ -1,11 +1,13 @@
 package com.czcz.helperapp
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import com.czcz.helperapp.user.UserDatabase
 import androidx.core.view.WindowInsetsCompat
@@ -94,6 +96,18 @@ class Mine : AppCompatActivity() {
                         binding.mottoedit.setText(user.motto)
                 }
             }
+        }
+
+        binding.statement.setOnClickListener {
+            startActivity(Intent(this, Statement::class.java))
+            finish()
+        }
+
+        binding.intent.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = "https://yiyan.baidu.com/?utm_source=mingfeng-utab".toUri()
+            }
+            startActivity(intent)
         }
 
         binding.changeright.setOnClickListener {
