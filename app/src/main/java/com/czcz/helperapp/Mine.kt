@@ -30,6 +30,12 @@ class Mine : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        if(intent.getBooleanExtra("退出登录",false)){
+            val intent = Intent(this, Login::class.java)
+            intent.putExtra("跳过自动登录", true)
+            startActivity(intent)
+            finish()
+        }
 
         userdatabase = UserDatabase.getDatabase(this)
         userDao = userdatabase.userDao()
@@ -67,7 +73,6 @@ class Mine : AppCompatActivity() {
         //跳转退出确认
         binding.quit.setOnClickListener {
             startActivity(Intent(this, Quit::class.java))
-            finish()
         }
 
         binding.changemessage.setOnClickListener {

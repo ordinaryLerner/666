@@ -65,7 +65,7 @@
             android:name=".Home"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.HelperApp" />
+            android:theme="@style/Theme.HelperApp.NoActionBar" />
         <activity
             android:name=".Register"
             android:exported="false" />

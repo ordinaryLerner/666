@@ -9,10 +9,42 @@
     android:background="@drawable/image8"
     android:gravity="center"
     tools:context=".Home">
+    <RelativeLayout
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:id="@+id/topmenu"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageButton
+            android:id="@+id/list"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/title"
+            android:background="@drawable/ic_list" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_centerInParent="true"
+            android:text="待办事项"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"/>
+
+        <ImageButton
+            android:id="@+id/more"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/ic_more" />
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/topmenu"
+        android:layout_above="@+id/bottommenu"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

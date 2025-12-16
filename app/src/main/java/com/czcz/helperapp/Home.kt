@@ -8,6 +8,7 @@ import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -97,34 +98,35 @@ class Home : AppCompatActivity() {
             }
             true
         }
-    }
+        binding.more.setOnClickListener { view ->
+            val popupMenu = android.widget.PopupMenu(this,view)
+            popupMenu.menuInflater.inflate(R.menu.main, popupMenu.menu)
 
-    //创建Item处理菜单
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main, menu)//读取菜单文件
-        return super.onCreateOptionsMenu(menu)
-    }
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.add -> {
+                        startActivity(Intent(this, ItemAdd::class.java))
+                        loadData()
+                        true
+                    }
 
-    //菜单选项点击事件
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add -> {
-                startActivity(Intent(this, ItemAdd::class.java))
-                loadData()
-            }
+                    R.id.clean -> {
+                        lifecycleScope.launch {
+                            itemDao.deleteAllItems()
+                            loadData()
+                        }
+                        true
+                    }
 
-            R.id.clean -> {
-                lifecycleScope.launch {
-                    itemDao.deleteAllItems()
-                    loadData()
+                    R.id.reload -> {
+                        loadData()
+                        true
+                    }
+                    else -> false
                 }
             }
-
-            R.id.reload -> {
-                loadData()
-            }
+            popupMenu.show()
         }
-        return super.onOptionsItemSelected(item)
     }
 
     //Item事件比较排序

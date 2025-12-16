@@ -7,26 +7,47 @@
     android:layout_height="match_parent"
     android:background="@drawable/image7"
     tools:context=".Timer">
-<LinearLayout
+    <RelativeLayout
+        android:id="@+id/topmenu"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageButton
+            android:id="@+id/icon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/title"
+            android:background="@drawable/ic_timericon" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_centerInParent="true"
+            android:text="计时器"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"/>
+    </RelativeLayout>
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:layout_above="@+id/timerEdit"
-    android:layout_centerHorizontal="true">
+    android:layout_above="@+id/timerEdit">
     <TextView
         android:id="@+id/statusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="工作时间"
-        android:layout_marginBottom="10dp"
         android:textSize="30sp" />
+
     <ImageButton
         android:id="@+id/modelchange"
-        android:background="@drawable/transparent_background"
+        android:layout_toRightOf="@+id/statusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/triangle_down"/>
-</LinearLayout>
+        android:layout_centerVertical="true"
+        android:background="@drawable/transparent_background"
+        android:src="@drawable/ic_triangle_down" />
+</RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/timerEdit"
