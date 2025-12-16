@@ -1,15 +1,19 @@
-package com.czcz.helperapp.itemPackage
+package com.czcz.helperapp.itemPackage.Item
 
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.czcz.helperapp.Home
 import com.czcz.helperapp.R
 import com.czcz.helperapp.databinding.ItemLayoutBinding
+import com.czcz.helperapp.itemPackage.ChangeItem
+import com.czcz.helperapp.itemPackage.Complete
+import com.czcz.helperapp.itemPackage.Confirm
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -50,7 +54,7 @@ class ItemAdapter(
             }
             //Item设置菜单
             menuButton.setOnClickListener { view ->
-                val popupMenu = android.widget.PopupMenu(context, view)
+                val popupMenu = PopupMenu(context, view)
                 popupMenu.menuInflater.inflate(R.menu.item_more, popupMenu.menu)
 
                 if(topitem == item.id){

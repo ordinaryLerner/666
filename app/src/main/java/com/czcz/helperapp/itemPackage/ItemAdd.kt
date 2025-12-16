@@ -14,6 +14,9 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.czcz.helperapp.R
 import com.czcz.helperapp.databinding.ActivityItemAddBinding
+import com.czcz.helperapp.itemPackage.Item.Item
+import com.czcz.helperapp.itemPackage.Item.ItemDao
+import com.czcz.helperapp.itemPackage.Item.ItemDatabase
 import kotlinx.coroutines.launch
 import java.util.Calendar
 

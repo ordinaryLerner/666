@@ -1,4 +1,4 @@
-package com.czcz.helperapp.itemPackage
+package com.czcz.helperapp.itemPackage.Item
 
 import android.content.Context
 import androidx.room.Database

@@ -9,6 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import com.czcz.helperapp.R
 import android.widget.Toast
 import com.czcz.helperapp.databinding.ActivityCompleteBinding
+import com.czcz.helperapp.itemPackage.Item.ItemDao
+import com.czcz.helperapp.itemPackage.Item.ItemDatabase
 import kotlinx.coroutines.launch
 
 class Complete : AppCompatActivity() {

@@ -5,10 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.os.Bundle
 import android.content.Intent
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,11 +13,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.czcz.helperapp.databinding.ActivityHomeBinding
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.czcz.helperapp.itemPackage.ItemDatabase
-import com.czcz.helperapp.itemPackage.Item
-import com.czcz.helperapp.itemPackage.ItemAdapter
+import com.czcz.helperapp.itemPackage.Item.ItemDatabase
+import com.czcz.helperapp.itemPackage.Item.Item
+import com.czcz.helperapp.itemPackage.Item.ItemAdapter
 import com.czcz.helperapp.itemPackage.ItemAdd
-import com.czcz.helperapp.itemPackage.ItemDao
+import com.czcz.helperapp.itemPackage.Item.ItemDao
 import com.czcz.helperapp.user.CompleteMessage
 import com.czcz.helperapp.user.UserDao
 import com.czcz.helperapp.user.UserDatabase
