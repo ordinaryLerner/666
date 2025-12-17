@@ -1,5 +1,6 @@
 package com.czcz.helperapp
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,10 +13,16 @@ import com.czcz.helperapp.user.User
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.czcz.helperapp.databinding.ActivityRegisterBinding
+import com.czcz.helperapp.itemPackage.ItemType.ItemType
+import com.czcz.helperapp.itemPackage.ItemType.ItemTypeDao
+import com.czcz.helperapp.itemPackage.ItemType.ItemTypeDatabase
 
 class Register : AppCompatActivity() {
     lateinit var binding: ActivityRegisterBinding
     private lateinit var userDatabase: UserDatabase
+    private lateinit var typedatabase: ItemTypeDatabase
+    private lateinit var typeDao: ItemTypeDao
+    private val itemTypeList = mutableListOf<ItemType>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -67,6 +74,19 @@ class Register : AppCompatActivity() {
                         binding.wrong.visibility = View.GONE
                         userDatabase.userDao().insertUser(user)
                         Toast.makeText(this@Register, "注册成功", Toast.LENGTH_SHORT).show()
+                        typedatabase = ItemTypeDatabase.getDatabase(this@Register)
+                        typeDao = typedatabase.itemTypeDao()
+                        lifecycleScope.launch{
+                            val defaultType = ItemType(
+                                id = 0,
+                                itemType = "全部事项",
+                                username = username
+                            )
+                            itemTypeList.add(defaultType)
+                            lifecycleScope.launch {
+                                typeDao.insertItemType(defaultType)
+                            }
+                        }
                         finish()
                     }
                 }

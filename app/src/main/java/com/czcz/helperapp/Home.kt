@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.content.Intent
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,8 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.czcz.helperapp.itemPackage.Item.ItemDatabase
 import com.czcz.helperapp.itemPackage.Item.Item
 import com.czcz.helperapp.itemPackage.Item.ItemAdapter
-import com.czcz.helperapp.itemPackage.ItemAdd
+import com.czcz.helperapp.itemPackage.Item.ItemAdd
 import com.czcz.helperapp.itemPackage.Item.ItemDao
+import com.czcz.helperapp.itemPackage.ItemType.ItemType
+import com.czcz.helperapp.itemPackage.ItemType.ItemTypeAdapter
+import com.czcz.helperapp.itemPackage.ItemType.ItemTypeDao
+import com.czcz.helperapp.itemPackage.ItemType.ItemTypeAdd
+import com.czcz.helperapp.itemPackage.ItemType.ItemTypeDatabase
 import com.czcz.helperapp.user.CompleteMessage
 import com.czcz.helperapp.user.UserDao
 import com.czcz.helperapp.user.UserDatabase
@@ -27,14 +33,20 @@ import java.util.Locale
 
 
 class Home : AppCompatActivity() {
+    private var isDeleteMode = false
+    private lateinit var itemTypeAdapter: ItemTypeAdapter
     private lateinit var currentusername: String
     private lateinit var binding: ActivityHomeBinding
     private lateinit var database: ItemDatabase
+    private lateinit var typeDao: ItemTypeDao
     private lateinit var itemDao: ItemDao
+    private lateinit var typedatabase: ItemTypeDatabase
     private lateinit var userDao: UserDao
     private lateinit var userdatabase: UserDatabase
     private val itemList = mutableListOf<Item>()
+    private val itemTypeList = mutableListOf<ItemType>()
     private lateinit var adapter: ItemAdapter
+    private lateinit var typeadapter: ItemTypeAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,16 +59,61 @@ class Home : AppCompatActivity() {
         userdatabase = UserDatabase.getDatabase(this)
         userDao = userdatabase.userDao()
 
+        typedatabase = ItemTypeDatabase.getDatabase(this)
+        typeDao = typedatabase.itemTypeDao()
+
         currentusername = getSharedPreferences("currentusername", MODE_PRIVATE).getString("currentusername", "") ?: ""
 
         //创建适应器实例
         //回调模式：将删除方法调用到适配器中，不用在主线程执行删除，避免阻塞主线程
         adapter = ItemAdapter(null,this, itemList,) { item ->
-           loadData()
+           loadItemData()
         }
 
         binding.recycler.adapter = adapter//设置自定义适配器作为RecyclerView的适配器
         binding.recycler.layoutManager = LinearLayoutManager(this)//设置布局管理器为线性布局
+
+        binding.typerecycler.apply {
+            layoutManager = LinearLayoutManager(this@Home)
+            typeadapter = ItemTypeAdapter(itemTypeList){ itemType ->
+                binding.title.text = itemType.itemType
+                loadItemData()
+                filiterItemsByType(itemType)
+            }
+            adapter = typeadapter
+        }
+
+        val horizontalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.typerecycler.layoutManager = horizontalLayoutManager
+
+        binding.typeadd.setOnClickListener {
+            val intent = Intent(this, ItemTypeAdd::class.java)
+            startActivity(intent)
+        }
+
+        binding.typedelete.setOnClickListener {
+            isDeleteMode = true
+            binding.typedelete.visibility = View.INVISIBLE
+            binding.deleteconfirm.visibility = View.VISIBLE
+            typeadapter.setDeleteMode(isDeleteMode)
+        }
+
+        binding.deleteconfirm.setOnClickListener {
+            val selectdItemTypes = typeadapter.getSelectedItemTypes()
+            if(selectdItemTypes.isNotEmpty()){
+                lifecycleScope.launch {
+                   selectdItemTypes.forEach { itemType ->
+                       typeDao.deleteItem(itemType.id)
+                   }
+                }
+            }
+            binding.typedelete.visibility = View.VISIBLE
+            binding.deleteconfirm.visibility = View.INVISIBLE
+            isDeleteMode = false
+            typeadapter.setDeleteMode(isDeleteMode)
+           startActivity(Intent(this, Home::class.java))
+            finish()
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -64,7 +121,7 @@ class Home : AppCompatActivity() {
             insets//实现自适应窗口，避免内容被遮挡
         }
 
-        loadData()
+        loadItemData()
         judge()
         checkUserInfoComplete(currentusername)
 
@@ -103,20 +160,18 @@ class Home : AppCompatActivity() {
                 when (menuItem.itemId) {
                     R.id.add -> {
                         startActivity(Intent(this, ItemAdd::class.java))
-                        loadData()
                         true
                     }
 
                     R.id.clean -> {
                         lifecycleScope.launch {
                             itemDao.deleteAllItems()
-                            loadData()
                         }
                         true
                     }
 
                     R.id.reload -> {
-                        loadData()
+                        loadItemData()
                         true
                     }
                     else -> false
@@ -150,7 +205,7 @@ class Home : AppCompatActivity() {
     }
 
     //重新加载数据
-    private fun loadData() {
+    private fun loadItemData() {
         lifecycleScope.launch {
             val items = itemDao.getAllItemsByUser(currentusername)//从数据库获取所有数据，定义变量
             itemList.clear()//清空列表
@@ -165,6 +220,15 @@ class Home : AppCompatActivity() {
         }
     }
 
+    private fun loadItemTypeData() {
+        lifecycleScope.launch {
+            val itemTypes = typeDao.getAllItemTypesByUser(currentusername)
+            itemTypeList.clear()
+            itemTypeList.addAll(itemTypes)
+            binding.typerecycler.adapter?.notifyDataSetChanged()
+        }
+    }
+
     //Item列表为空判断，显示提示
     fun judge() {
         if (itemList.isEmpty()) {
@@ -175,11 +239,36 @@ class Home : AppCompatActivity() {
         }
     }
 
+    private fun filiterItemsByType(itemType: ItemType) {
+        lifecycleScope.launch {
+            val items = itemDao.getAllItemsByUser(currentusername)
+            if(itemType.itemType == "全部事项"){
+                itemList.clear()
+                itemList.addAll(items)
+            }
+            else{
+                val fliterItems = items.filter { item ->
+                    item.itemType == itemType.itemType
+                }
+                itemList.clear()
+                itemList.addAll(fliterItems)
+            }
+            itemList.sortWith { item1, item2 ->
+                compareDateTime(item1.date, item2.date)
+            }
+            adapter.notifyDataSetChanged()
+            adapter.notifyItemRangeChanged(0, itemList.size)
+            judge()
+        }
+
+    }
+
     //重新加载Home时刷新数据
     override fun onResume() {
         super.onResume()
         judge()
-        loadData()
+        loadItemData()
+        loadItemTypeData()
     }
 
     //检查用户信息是否完整

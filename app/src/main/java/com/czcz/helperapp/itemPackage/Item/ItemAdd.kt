@@ -1,11 +1,10 @@
-package com.czcz.helperapp.itemPackage
+package com.czcz.helperapp.itemPackage.Item
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,9 +13,6 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.czcz.helperapp.R
 import com.czcz.helperapp.databinding.ActivityItemAddBinding
-import com.czcz.helperapp.itemPackage.Item.Item
-import com.czcz.helperapp.itemPackage.Item.ItemDao
-import com.czcz.helperapp.itemPackage.Item.ItemDatabase
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -63,7 +59,7 @@ class ItemAdd : AppCompatActivity() {
                 description = binding.descriptionlayout.editText?.text.toString(),
                 date = binding.datelayout.editText?.text.toString(),
                 username = currentusername,
-                itemType = "All"
+                itemType = "全部事项"
             )
 
             lifecycleScope.launch {
@@ -137,7 +133,8 @@ class ItemAdd : AppCompatActivity() {
                         }
                     }
 
-                    val selectedDateTime = formatDateTime(year, month + 1, dayOfMonth, hourOfDay, minute)
+                    val selectedDateTime =
+                        formatDateTime(year, month + 1, dayOfMonth, hourOfDay, minute)
                     binding.dateedit.setText(selectedDateTime)
                 },
                 currentHour,

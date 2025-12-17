@@ -53,7 +53,7 @@ class Timer : AppCompatActivity() {
         currentusername = getSharedPreferences("currentusername", MODE_PRIVATE).getString("currentusername", "") ?: ""
 
         setupRecyclerView()
-        loadData()
+        loadItemData()
 
         binding.bottommenu.selectedItemId = R.id.timer
         binding.bottommenu.setOnItemSelectedListener { menuItem ->
@@ -303,7 +303,7 @@ class Timer : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        loadData()
+        loadItemData()
     }
     private fun resetTimer() {
         countDownTimer?.cancel()
@@ -314,7 +314,7 @@ class Timer : AppCompatActivity() {
         binding.statusText.text = "工作时间"
     }
 
-    private fun loadData() {
+    private fun loadItemData() {
         lifecycleScope.launch {
             val items = itemDao.getAllItemsByUser(currentusername)//从数据库获取所有数据，定义变量
             itemList.clear()//清空列表
