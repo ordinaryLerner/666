@@ -222,9 +222,20 @@ class Home : AppCompatActivity() {
 
     private fun loadItemTypeData() {
         lifecycleScope.launch {
-            val itemTypes = typeDao.getAllItemTypesByUser(currentusername)
+            var itemTypes = typeDao.getAllItemTypesByUser(currentusername)
             itemTypeList.clear()
             itemTypeList.addAll(itemTypes)
+            val DefualtItemType = itemTypeList.find{it.itemType == "全部事项"}
+            if(DefualtItemType == null){
+                val defaultType = ItemType(
+                    itemType = "全部事项",
+                    username = currentusername
+                )
+                typeDao.insertItemType(defaultType)
+                itemTypes = typeDao.getAllItemTypesByUser(currentusername)
+                itemTypeList.clear()
+                itemTypeList.addAll(itemTypes)
+            }
             binding.typerecycler.adapter?.notifyDataSetChanged()
         }
     }

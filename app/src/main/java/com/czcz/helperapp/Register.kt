@@ -78,14 +78,10 @@ class Register : AppCompatActivity() {
                         typeDao = typedatabase.itemTypeDao()
                         lifecycleScope.launch{
                             val defaultType = ItemType(
-                                id = 0,
                                 itemType = "全部事项",
                                 username = username
                             )
-                            itemTypeList.add(defaultType)
-                            lifecycleScope.launch {
-                                typeDao.insertItemType(defaultType)
-                            }
+                            typeDao.insertItemType(defaultType)
                         }
                         finish()
                     }

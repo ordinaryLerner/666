@@ -40,8 +40,8 @@ class ItemTypeAdapter(
             root.setOnClickListener {
                 onItemClick(itemType)
             }
-            if(isDeleteMode){
-                if(itemType.id!=0){
+            if(itemType.itemType != "全部事项"){
+                if (isDeleteMode) {
                     deletecheck.visibility = View.VISIBLE
                     deletecheck.setOnCheckedChangeListener { _, isChecked ->
                         if (isChecked) {
@@ -50,14 +50,13 @@ class ItemTypeAdapter(
                             selectedItemTypes.remove(itemType)
                         }
                     }
-            }
-                root.setOnClickListener(null)//删除模式下取消点击事件,否则点击事件会触发两次
-        }
-            else{
-                deletecheck.visibility= View.GONE
-                deletecheck.setOnCheckedChangeListener(null)
-                root.setOnClickListener { // 正常模式下设置点击事件
-                    onItemClick(itemType)
+                    root.setOnClickListener(null)//删除模式下取消点击事件,否则点击事件会触发两次
+                } else {
+                    deletecheck.visibility = View.GONE
+                    deletecheck.setOnCheckedChangeListener(null)
+                    root.setOnClickListener { // 正常模式下设置点击事件
+                        onItemClick(itemType)
+                    }
                 }
             }
     }
