@@ -103,6 +103,10 @@ class Mine : AppCompatActivity() {
             finish()
         }
 
+        binding.edit.setOnClickListener {
+            startActivity(Intent(this, Edit::class.java))
+        }
+
         binding.intent.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data = "https://yiyan.baidu.com/?utm_source=mingfeng-utab".toUri()

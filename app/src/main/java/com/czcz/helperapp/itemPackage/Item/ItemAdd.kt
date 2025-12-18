@@ -55,11 +55,18 @@ class ItemAdd : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if(binding.detaillayout.editText?.text.isNullOrBlank()){
+                binding.detaillayout.error = "请填写具体内容"
+                Toast.makeText(this, "请填写具体内容", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val item = Item(
                 description = binding.descriptionlayout.editText?.text.toString(),
                 date = binding.datelayout.editText?.text.toString(),
                 username = currentusername,
-                itemType = "全部事项"
+                itemType = "全部事项",
+                detail = binding.detaillayout.editText?.text.toString(),
             )
 
             lifecycleScope.launch {
@@ -83,11 +90,19 @@ class ItemAdd : AppCompatActivity() {
         binding.descriptionedit.doOnTextChanged { text, start, before, count ->
             binding.descriptionlayout.error = null
             binding.datelayout.error = null
+            binding.detaillayout.error = null
         }
 
         binding.dateedit.doOnTextChanged { text, start, before, count ->
             binding.descriptionlayout.error = null
             binding.datelayout.error = null
+            binding.detaillayout.error = null
+        }
+
+        binding.detailedit.doOnTextChanged { text, start, before, count ->
+            binding.descriptionlayout.error = null
+            binding.datelayout.error = null
+            binding.detaillayout.error = null
         }
     }
 

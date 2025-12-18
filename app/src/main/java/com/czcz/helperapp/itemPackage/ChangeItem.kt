@@ -36,6 +36,7 @@ class ChangeItem : AppCompatActivity() {
 
         binding.descriptionedit.setText(intent.getStringExtra("item_description"))
         binding.dateedit.setText(intent.getStringExtra("item_date"))
+        binding.detailedit.setText(intent.getStringExtra("item_detail"))
 
         database = ItemDatabase.getDatabase(this)
         itemDao = database.itemDao()
@@ -54,6 +55,12 @@ class ChangeItem : AppCompatActivity() {
             if(binding.datelayout.editText?.text.isNullOrBlank()){
                 binding.datelayout.error = "请选择日期"
                 Toast.makeText(this, "请选择日期", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(binding.detaillayout.editText?.text.isNullOrBlank()){
+                binding.detaillayout.error = "请填写具体内容"
+                Toast.makeText(this, "请填写具体内容", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -81,12 +88,21 @@ class ChangeItem : AppCompatActivity() {
         binding.descriptionedit.doOnTextChanged { text, start, before, count ->
             binding.descriptionlayout.error = null
             binding.datelayout.error = null
+            binding.detaillayout.error = null
         }
 
         binding.dateedit.doOnTextChanged { text, start, before, count ->
             binding.descriptionlayout.error = null
             binding.datelayout.error = null
+            binding.detaillayout.error = null
         }
+
+        binding.detailedit.doOnTextChanged { text, start, before, count ->
+            binding.descriptionlayout.error = null
+            binding.datelayout.error = null
+            binding.detaillayout.error = null
+        }
+
     }
     private fun showDateTimePicker() {
         val calendar = Calendar.getInstance()

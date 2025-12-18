@@ -163,7 +163,7 @@
         android:background="@drawable/rounded_background"
         android:layout_margin="5dp"
         android:elevation="4dp"
-        android:layout_above="@+id/quitlayout">
+        android:layout_above="@+id/editlayout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -176,6 +176,37 @@
 
         <ImageButton
             android:id="@+id/statement"
+            android:layout_marginEnd="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:src="@android:drawable/ic_media_next"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/editlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_background"
+        android:layout_margin="5dp"
+        android:elevation="4dp"
+        android:layout_above="@+id/quitlayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:text="修改账户"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/edit"
             android:layout_marginEnd="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -30,6 +30,10 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.collections.mutableListOf
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.Data
+import java.util.concurrent.TimeUnit
 
 
 class Home : AppCompatActivity() {
@@ -341,50 +345,59 @@ class Home : AppCompatActivity() {
     }
     //设置Item提醒
     private fun scheduleItemReminders() {
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager//获取系统闹钟服务
-        itemList.forEach { item ->
+       itemList.forEach { item ->
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
             val triggerTime = dateFormat.parse(item.date)?.time ?: return@forEach//跳出一次循环
-            val currenttime = System.currentTimeMillis()
+            val currentTime = System.currentTimeMillis()
             // 提前1小时提醒
             val reminderTime = triggerTime - (60 * 60 * 1000)
 
-            if (reminderTime > currenttime) {
-                val intent = Intent(this, ItemReminderReceiver::class.java)
-                intent.putExtra("item_id", item.id)
-                intent.putExtra("item_description", item.description)
-                intent.putExtra("item_type", "before")
-                intent.putExtra("item_name", username)
-                intent.putExtra("item_gender", gender)
-
-                //实例pendingintent：延迟执行
-                val pendingIntent = PendingIntent.getBroadcast(
-                    this,
-                    item.id,
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            if (reminderTime > currentTime) {
+                scheduleWorkManagerReminder(
+                    itemId = item.id,
+                    description = item.description,
+                    type = "before",
+                    name = username ?: "",
+                    gender = gender ?: "",
+                    delayMillis = reminderTime - currentTime
                 )
-                //Rtc_WAKEUP使用实时闹钟，并且唤醒设备，进行pendingintent发送广播信息
-                alarmManager.set(AlarmManager.RTC_WAKEUP, reminderTime, pendingIntent)
             }
             //到期发送提醒
-            if(triggerTime > currenttime){
-                val intent = Intent(this, ItemReminderReceiver::class.java)
-                intent.putExtra("item_id", item.id)
-                intent.putExtra("item_description", item.description)
-                intent.putExtra("item_type","deadline")
-                intent.putExtra("item_name", username)
-                intent.putExtra("item_gender", gender)
-
-                val pendingIntent = PendingIntent.getBroadcast(
-                    this,
-                    item.id + 1,//保证提醒的唯一性
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            if(triggerTime > currentTime){
+                scheduleWorkManagerReminder(
+                    itemId = item.id,
+                    description = item.description,
+                    type = "deadline",
+                    name = username ?: "",
+                    gender = gender ?: "",
+                    delayMillis = triggerTime - currentTime
                 )
-                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
             }
+
         }
+    }
+    private fun scheduleWorkManagerReminder(
+        itemId: Int,
+        description: String,
+        type: String,
+        name: String,
+        gender: String,
+        delayMillis: Long
+    ) {
+        val data = Data.Builder()
+            .putInt("item_id", itemId)
+            .putString("item_description", description)
+            .putString("item_type", type)
+            .putString("item_name", name)
+            .putString("item_gender", gender)
+            .build()
+
+        val workRequest = OneTimeWorkRequestBuilder<ItemReminderWorker>()
+            .setInputData(data)
+            .setInitialDelay(delayMillis, TimeUnit.MILLISECONDS)
+            .build()
+
+        WorkManager.getInstance(this).enqueue(workRequest)
     }
 }
 

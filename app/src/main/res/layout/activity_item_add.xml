@@ -18,7 +18,7 @@
             android:id="@+id/descriptionedit"
             android:layout_width="350dp"
             android:layout_height="match_parent"
-            android:hint="请标注具体事项"
+            android:hint="请标注事项"
             android:inputType="text"
             android:textSize="20dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -37,6 +37,20 @@
             android:hint="请选择具体时限"
             android:inputType="none"
             android:focusable="false"
+            android:textSize="20dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/detaillayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="center">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/detailedit"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:hint="请标注事项详情"
+            android:inputType="text"
             android:textSize="20dp" />
     </com.google.android.material.textfield.TextInputLayout>
     <LinearLayout

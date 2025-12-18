@@ -14,6 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelperApp.NoActionBar">
         <activity
+            android:name=".Edit"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity
+            android:name=".itemPackage.Item.ItemDetail"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
             android:name=".itemPackage.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.HelperApp.NoActionBar">
@@ -95,8 +103,7 @@
         <activity
             android:name=".Login"
             android:exported="true"
-            android:theme="@style/Theme.HelperApp.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.HelperApp.NoActionBar" />
     </application>
 
 </manifest>

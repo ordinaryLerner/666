@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.czcz.helperapp.Home
@@ -43,6 +44,13 @@ class ItemAdapter(
             description.text = item.description
             date.text = item.date
             checkbox.isChecked = item.checkbox
+            root.setOnClickListener {
+                val intent = Intent(context, ItemDetail::class.java)
+                intent.putExtra("item_description", item.description)
+                intent.putExtra("item_date", item.date)
+                intent.putExtra("item_detail", item.detail)
+                context.startActivity(intent)
+            }
             if(topitem == item.id){ itemtop.visibility = View.VISIBLE }
             //判断是否超时
             if(ItemGone(item)){
@@ -107,6 +115,7 @@ class ItemAdapter(
 
     override fun getItemCount() = items.size
 
+
     //删除对应的Item
     private fun deleteItemByUser(username: String, position: Int) {
         val item = items[position]
@@ -121,6 +130,7 @@ class ItemAdapter(
         intent.putExtra("item_id", item.id)
         intent.putExtra("item_description",item.description)
         intent.putExtra("item_date",item.date)
+        intent.putExtra("item_detail",item.detail)
         context.startActivityForResult(intent, 5)
     }
     //判断Item是否超时
