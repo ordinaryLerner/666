@@ -23,7 +23,6 @@ class ItemAdapter(
     var topitem: Int?,//标记置顶Item
     private val context: Home,
     private val items: MutableList<Item>,
-    private val onItemDeleteListener: (Item) -> Unit,
 ) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
     // ...
     class ViewHolder(val binding: ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)

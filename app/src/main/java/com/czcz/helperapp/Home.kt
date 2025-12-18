@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Bundle
 import android.content.Intent
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -30,11 +29,12 @@ import com.czcz.helperapp.user.UserDatabase
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.collections.mutableListOf
 
 
 class Home : AppCompatActivity() {
     private var isDeleteMode = false
-    private lateinit var itemTypeAdapter: ItemTypeAdapter
+    private var curType: ItemType?= null
     private lateinit var currentusername: String
     private lateinit var binding: ActivityHomeBinding
     private lateinit var database: ItemDatabase
@@ -43,6 +43,7 @@ class Home : AppCompatActivity() {
     private lateinit var typedatabase: ItemTypeDatabase
     private lateinit var userDao: UserDao
     private lateinit var userdatabase: UserDatabase
+    private var filterList: List<Item> = emptyList()
     private val itemList = mutableListOf<Item>()
     private val itemTypeList = mutableListOf<ItemType>()
     private lateinit var adapter: ItemAdapter
@@ -66,21 +67,32 @@ class Home : AppCompatActivity() {
 
         //创建适应器实例
         //回调模式：将删除方法调用到适配器中，不用在主线程执行删除，避免阻塞主线程
-        adapter = ItemAdapter(null,this, itemList,) { item ->
-           loadItemData()
-        }
+        adapter = ItemAdapter(null,this, itemList,)
 
         binding.recycler.adapter = adapter//设置自定义适配器作为RecyclerView的适配器
         binding.recycler.layoutManager = LinearLayoutManager(this)//设置布局管理器为线性布局
 
         binding.typerecycler.apply {
-            layoutManager = LinearLayoutManager(this@Home)
-            typeadapter = ItemTypeAdapter(itemTypeList){ itemType ->
+            typeadapter = ItemTypeAdapter(
+                itemTypes=itemTypeList,
+                itemsList=itemList){ itemType ->
                 binding.title.text = itemType.itemType
-                loadItemData()
-                filiterItemsByType(itemType)
+                curType = itemType
+                filterItemsByType(itemType)
             }
             adapter = typeadapter
+            lifecycleScope.launch {
+                itemTypeList.addAll(typeDao.getAllItemTypesByUser(currentusername))
+                typeadapter.notifyDataSetChanged()
+            }
+            layoutManager = LinearLayoutManager(this@Home)
+        }
+
+        lifecycleScope.launch {
+            val defaultType = typeDao.getItemTypeByType("全部事项")
+            curType = defaultType
+            filterItemsByType(curType)
+            loadItemData()
         }
 
         val horizontalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -104,15 +116,24 @@ class Home : AppCompatActivity() {
                 lifecycleScope.launch {
                    selectdItemTypes.forEach { itemType ->
                        typeDao.deleteItem(itemType.id)
-                   }
+                       }
+                    kotlinx.coroutines.delay(100)
+                    UpdateItem()
                 }
+                binding.typedelete.visibility = View.VISIBLE
+                binding.deleteconfirm.visibility = View.INVISIBLE
+                isDeleteMode = false
+                typeadapter.setDeleteMode(isDeleteMode)
+                loadItemTypeData()
+                loadItemData()
+                }
+            else{
+                binding.typedelete.visibility = View.VISIBLE
+                binding.deleteconfirm.visibility = View.INVISIBLE
+                isDeleteMode = false
+                typeadapter.setDeleteMode(isDeleteMode)
             }
-            binding.typedelete.visibility = View.VISIBLE
-            binding.deleteconfirm.visibility = View.INVISIBLE
-            isDeleteMode = false
-            typeadapter.setDeleteMode(isDeleteMode)
-           startActivity(Intent(this, Home::class.java))
-            finish()
+            quitload()
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -207,17 +228,17 @@ class Home : AppCompatActivity() {
     //重新加载数据
     private fun loadItemData() {
         lifecycleScope.launch {
-            val items = itemDao.getAllItemsByUser(currentusername)//从数据库获取所有数据，定义变量
-            itemList.clear()//清空列表
-            itemList.addAll(items)//添加数据
+                itemList.clear()//清空列表
+                itemList.addAll(filterList)
             itemList.sortWith { item1, item2 ->
                 compareDateTime(item1.date, item2.date)
             }
             adapter.notifyDataSetChanged()//通知适配器数据已改变
             adapter.notifyItemRangeChanged(0, itemList.size)
+            binding.typerecycler.adapter?.notifyDataSetChanged()
             judge()
             scheduleItemReminders()
-        }
+            }
     }
 
     private fun loadItemTypeData() {
@@ -240,6 +261,24 @@ class Home : AppCompatActivity() {
         }
     }
 
+    fun UpdateItem(){
+        lifecycleScope.launch {
+            val items = itemDao.getAllItemsByUser(currentusername)
+            items.forEach { item ->
+                if(itemTypeList.find{it.itemType == item.itemType} ==  null){
+                    val updateditem = item.copy(itemType = "全部事项")
+                    itemDao.updateItem(updateditem)
+                }
+            }
+            loadItemData()
+        }
+    }
+
+    fun quitload(){
+        startActivity(Intent(this, Home::class.java))
+        finish()
+    }
+
     //Item列表为空判断，显示提示
     fun judge() {
         if (itemList.isEmpty()) {
@@ -250,26 +289,21 @@ class Home : AppCompatActivity() {
         }
     }
 
-    private fun filiterItemsByType(itemType: ItemType) {
+    private fun filterItemsByType(itemType: ItemType?) {
         lifecycleScope.launch {
             val items = itemDao.getAllItemsByUser(currentusername)
-            if(itemType.itemType == "全部事项"){
+            if(itemType?.itemType == "全部事项"){
                 itemList.clear()
+                filterList = items
                 itemList.addAll(items)
             }
             else{
-                val fliterItems = items.filter { item ->
-                    item.itemType == itemType.itemType
+                filterList = items.filter { item ->
+                    item.itemType == itemType?.itemType
                 }
-                itemList.clear()
-                itemList.addAll(fliterItems)
             }
-            itemList.sortWith { item1, item2 ->
-                compareDateTime(item1.date, item2.date)
-            }
-            adapter.notifyDataSetChanged()
-            adapter.notifyItemRangeChanged(0, itemList.size)
             judge()
+            loadItemData()
         }
 
     }
@@ -278,6 +312,7 @@ class Home : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         judge()
+        filterItemsByType(curType)
         loadItemData()
         loadItemTypeData()
     }
@@ -317,7 +352,7 @@ class Home : AppCompatActivity() {
                 //实例pendingintent：延迟执行
                 val pendingIntent = PendingIntent.getBroadcast(
                     this,
-                    item.id.toInt(),
+                    item.id,
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
@@ -333,7 +368,7 @@ class Home : AppCompatActivity() {
 
                 val pendingIntent = PendingIntent.getBroadcast(
                     this,
-                    item.id.toInt() + 1,//保证提醒的唯一性
+                    item.id + 1,//保证提醒的唯一性
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )

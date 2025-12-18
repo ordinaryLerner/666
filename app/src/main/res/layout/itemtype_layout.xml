@@ -3,32 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="wrap_content">
+    android:layout_height="40dp"
+    android:layout_margin="5dp">
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:layout_margin="5dp"
         app:cardElevation="6dp"
         app:cardCornerRadius="8dp">
+
         <RelativeLayout
             android:layout_width="300dp"
-            android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/itemTypeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textColor="#000000"
-        android:textSize="20sp"/>
+            android:layout_height="40dp">
 
-        <CheckBox
-            android:id="@+id/deletecheck"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible" />
+            <ImageButton
+                android:id="@+id/selectitems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/transparent_background"
+                android:src="@drawable/ic_edit"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/itemTypeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="3dp"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <CheckBox
+                android:id="@+id/deletecheck"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:visibility="invisible" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

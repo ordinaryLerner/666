@@ -9,9 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.czcz.helperapp.itemPackage.Complete
 import com.czcz.helperapp.itemPackage.Item.Item
 import com.czcz.helperapp.databinding.TimerLayoutBinding
+import com.czcz.helperapp.itemPackage.ItemType.ItemType
+
+private var isSelectMode = false
+
+private var selectedItems = mutableSetOf<Item>()
+private var unselectedItems = mutableSetOf<Item>()
 
 class TimerItemAdapter(private val items: List<Item>, private val context: Context) : RecyclerView.Adapter<TimerItemAdapter.ViewHolder>() {
 
+    fun setSelectMode(selectMode: Boolean) {
+        isSelectMode = selectMode
+        notifyDataSetChanged()
+    }
+
+    fun getSelectedItems(): Set<Item> = selectedItems.toSet()
+    fun getUnselectedItems(): Set<Item> = unselectedItems.toSet()
     class ViewHolder(val binding: TimerLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,16 +36,30 @@ class TimerItemAdapter(private val items: List<Item>, private val context: Conte
         val item = items[position]
         val currentusername = context.getSharedPreferences("currentusername", MODE_PRIVATE)
             .getString("currentusername", "") ?: ""
-
+        val curType = context.getSharedPreferences("curType", MODE_PRIVATE)
+            .getString("curType", "") ?: ""
         with(holder.binding) {
             description.text = item.description
-            checkbox.isChecked = item.checkbox
+            if(isSelectMode){
+                if(item.itemType == curType){
+                    checkbox.isChecked = true
+                }
+            }
             checkbox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
+                if (isChecked && !isSelectMode) {
                     val intent = Intent(context, Complete::class.java)
                     intent.putExtra("item_id", item.id)
                     intent.putExtra("item_username", currentusername)
-                    context.startActivity(intent)
+                    context.startActivity(Intent(intent))
+                    }
+                else if(isSelectMode){
+                    if (isChecked) {
+                        selectedItems.add(item)
+                        unselectedItems.remove(item)
+                    } else {
+                        unselectedItems.add(item)
+                        selectedItems.remove(item)
+                    }
                 }
             }
         }

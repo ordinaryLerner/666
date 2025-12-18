@@ -42,9 +42,9 @@ class ItemTypeAdd : AppCompatActivity() {
             )
             typedatabase = ItemTypeDatabase.getDatabase(this)
             typeDao = typedatabase.itemTypeDao()
-                lifecycleScope.launch {
-                    typeDao.insertItemType(itemType)
-                }
+            lifecycleScope.launch {
+                typeDao.insertItemType(itemType)
+            }
             finish()
         }
 

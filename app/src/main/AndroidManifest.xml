@@ -14,9 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelperApp.NoActionBar">
         <activity
-            android:name=".itemPackage.ItemType.ItemTypeAdd"
+            android:name=".itemPackage.ItemType.SelectItems"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity
+            android:name=".itemPackage.ItemType.ItemTypeAdd"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
             android:name=".Statement"
             android:exported="false" />

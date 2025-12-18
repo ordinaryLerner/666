@@ -12,6 +12,9 @@ interface ItemTypeDao {
     @Query("DELETE FROM itemtypes WHERE id = :id")
     suspend fun deleteItem(id: Int)
 
+    @Query("SELECT * FROM itemtypes WHERE itemType = :itemType")
+    suspend fun getItemTypeByType(itemType: String): ItemType?
+
     @Query("SELECT * FROM itemtypes WHERE username = :username")
     suspend fun getAllItemTypesByUser(username: String): List<ItemType>
 }
