@@ -243,12 +243,12 @@ class Timer : AppCompatActivity() {
                     }
 
                     else {
-                        val maxValue = if (isWorkSession) 25 else 10
+                        val maxValue = if (isWorkSession) 25 else 5
 
                         if (value > maxValue) {
                             isUpdatingText = true
                             binding.input1.tag = maxValue.toString() // 使用 tag 避免循环
-                            binding.input1.setText(maxValue.toString())
+                            binding.input1.setText("05")
                             binding.input1.setSelection(binding.input1.text?.length ?: 0)
                             Toast.makeText(this, "超出范围", Toast.LENGTH_SHORT).show()
                             binding.input1.tag = ""

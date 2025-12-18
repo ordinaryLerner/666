@@ -14,11 +14,13 @@ class ItemReminderReceiver : BroadcastReceiver() {
         val itemId = intent.getIntExtra("item_id", -1)
         val description = intent.getStringExtra("item_description") ?: ""
         val type = intent.getStringExtra("item_type") ?: ""
+        val name = intent.getStringExtra("item_name") ?: ""
+        val gender = intent.getStringExtra("item_gender") ?: ""
         // 发送通知
-        sendNotification(context, itemId, description,type)
+        sendNotification(context, itemId, description,type,name,gender)
     }
 
-    private fun sendNotification(context: Context, itemId: Int, description: String,type: String) {
+    private fun sendNotification(context: Context, itemId: Int, description: String,type: String,name: String,gender:  String) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -30,10 +32,15 @@ class ItemReminderReceiver : BroadcastReceiver() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        val contextText = when (type) {
+        val contextText = when(gender){
+            "male" -> "$name 先生，"
+            "female" -> "$name 女士，"
+            else -> "$name ,"
+        } +
+        when (type) {
             "before" -> "您的事项 $description 准备到截止时间了！"
             "deadline" -> "您的事项 $description 已经到截止时间了！"
-            else -> ""
+            else -> "您的有事项待办，请查看！"
         }
 
         val notification = NotificationCompat.Builder(context, "item_reminder")

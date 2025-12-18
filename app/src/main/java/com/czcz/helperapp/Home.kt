@@ -35,6 +35,8 @@ import kotlin.collections.mutableListOf
 class Home : AppCompatActivity() {
     private var isDeleteMode = false
     private var curType: ItemType?= null
+    private var gender:  String? = null
+    private var username: String? = null
     private lateinit var currentusername: String
     private lateinit var binding: ActivityHomeBinding
     private lateinit var database: ItemDatabase
@@ -140,6 +142,11 @@ class Home : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets//实现自适应窗口，避免内容被遮挡
+        }
+
+        lifecycleScope.launch {
+            gender = userDao.getUserByUsername(currentusername)?.gender
+            username = userDao.getUserByUsername(currentusername)?.name
         }
 
         loadItemData()
@@ -335,7 +342,6 @@ class Home : AppCompatActivity() {
     //设置Item提醒
     private fun scheduleItemReminders() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager//获取系统闹钟服务
-
         itemList.forEach { item ->
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
             val triggerTime = dateFormat.parse(item.date)?.time ?: return@forEach//跳出一次循环
@@ -348,6 +354,8 @@ class Home : AppCompatActivity() {
                 intent.putExtra("item_id", item.id)
                 intent.putExtra("item_description", item.description)
                 intent.putExtra("item_type", "before")
+                intent.putExtra("item_name", username)
+                intent.putExtra("item_gender", gender)
 
                 //实例pendingintent：延迟执行
                 val pendingIntent = PendingIntent.getBroadcast(
@@ -365,6 +373,8 @@ class Home : AppCompatActivity() {
                 intent.putExtra("item_id", item.id)
                 intent.putExtra("item_description", item.description)
                 intent.putExtra("item_type","deadline")
+                intent.putExtra("item_name", username)
+                intent.putExtra("item_gender", gender)
 
                 val pendingIntent = PendingIntent.getBroadcast(
                     this,

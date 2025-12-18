@@ -101,5 +101,8 @@ class Register : AppCompatActivity() {
                 binding.usernamelayout.error = null
             }
         }
+        binding.quit.setOnClickListener {
+            finish()
+        }
     }
 }

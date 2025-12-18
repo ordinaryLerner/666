@@ -37,8 +37,8 @@ class CompleteMessage : AppCompatActivity() {
         binding.complete.setOnClickListener {
             val name = binding.nameedit.text.toString()  //
             val Aca_number = binding.AcaNumberedit.text.toString()
-            val gender = if(binding.male.isChecked) { "男" }
-                         else if(binding.female.isChecked) { "女" }
+            val gender = if(binding.male.isChecked) { "male" }
+                         else if(binding.female.isChecked) { "female" }
                          else { "未填写" }
 
             binding.namelayout.error = null

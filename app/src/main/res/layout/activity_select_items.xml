@@ -7,11 +7,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".itemPackage.ItemType.SelectItems">
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="勾选需要分类的事项"
+        android:layout_centerHorizontal="true"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
+        android:layout_below="@+id/hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
     <LinearLayout
+
         android:id="@+id/buttonLayout"
         android:layout_below="@+id/recycler"
         android:layout_marginTop="30dp"

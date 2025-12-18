@@ -11,8 +11,8 @@ import com.czcz.helperapp.itemPackage.Item.Item
 import com.czcz.helperapp.databinding.TimerLayoutBinding
 import com.czcz.helperapp.itemPackage.ItemType.ItemType
 
-private var isSelectMode = false
 
+private var isSelectMode = false
 private var selectedItems = mutableSetOf<Item>()
 private var unselectedItems = mutableSetOf<Item>()
 
@@ -44,15 +44,21 @@ class TimerItemAdapter(private val items: List<Item>, private val context: Conte
                 if(item.itemType == curType){
                     checkbox.isChecked = true
                 }
+                else{
+                    checkbox.isChecked = false
+                }
+            }
+            else{
+                checkbox.isChecked = item.checkbox
             }
             checkbox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked && !isSelectMode) {
+                if (isChecked && isSelectMode == false) {
                     val intent = Intent(context, Complete::class.java)
                     intent.putExtra("item_id", item.id)
                     intent.putExtra("item_username", currentusername)
                     context.startActivity(Intent(intent))
                     }
-                else if(isSelectMode){
+                else if(isSelectMode == true){
                     if (isChecked) {
                         selectedItems.add(item)
                         unselectedItems.remove(item)

@@ -40,11 +40,11 @@ class ChangeMessage : AppCompatActivity() {
                 binding.nameedit.setText(user.name)
                 binding.AcaNumberedit.setText(user.Aca_number)
 
-                if (user.gender == "男") {
+                if (user.gender == "male") {
                     binding.male.isChecked = true
                 }
 
-                else if (user.gender == "女") {
+                else if (user.gender == "female") {
                     binding.female.isChecked = true
                 }
             }
@@ -52,8 +52,8 @@ class ChangeMessage : AppCompatActivity() {
         binding.complete.setOnClickListener {
             val name = binding.nameedit.text.toString()  //
             val Aca_number = binding.AcaNumberedit.text.toString()
-            val gender = if(binding.male.isChecked) { "男" }
-                         else if(binding.female.isChecked) { "女" }
+            val gender = if(binding.male.isChecked) { "male" }
+                         else if(binding.female.isChecked) { "female" }
                          else { "未填写" }
 
             binding.namelayout.error = null

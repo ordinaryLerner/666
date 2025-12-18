@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:textSize="40sp"/>
     </RelativeLayout>
+
 <RelativeLayout
     android:id="@+id/statuslayout"
     android:layout_width="match_parent"
@@ -125,19 +126,25 @@
             android:layout_height="wrap_content" style="?android:attr/buttonBarStyle"
             android:text="重置" />
     </LinearLayout>
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@+id/buttonLayout"
+        android:background="@drawable/shadow_top" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
-        android:layout_below="@+id/buttonLayout"
+        android:layout_below="@+id/shadow"
+        android:layout_above="@+id/bottommenu"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottommenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="373dp"
         app:menu="@menu/bottommenu" />
 
 </RelativeLayout>

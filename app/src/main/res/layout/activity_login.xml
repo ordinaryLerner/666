@@ -10,12 +10,16 @@
     android:layout_height="match_parent"
     tools:context=".Login">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@drawable/logo" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="登录"
-        android:textSize="60dp"/>
+        android:text="待办助手APP"
+        android:textSize="30dp"/>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameLayout"
         android:layout_width="wrap_content"

@@ -51,7 +51,6 @@ class SelectItems : AppCompatActivity() {
         }
 
         binding.add.setOnClickListener {
-            isSelectMode = !isSelectMode
             val selectedItems = adapter.getSelectedItems()
             val unselectedItems = adapter.getUnselectedItems()
             val curType = intent.getStringExtra("itemType")
@@ -73,13 +72,17 @@ class SelectItems : AppCompatActivity() {
                     }
                 }
             }
+            isSelectMode = false
             adapter.setSelectMode(isSelectMode)
             adapter.notifyDataSetChanged()
-            Toast.makeText(this,"添加成功", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"编辑成功", Toast.LENGTH_SHORT).show()
             finish()
         }
 
         binding.cancel.setOnClickListener {
+            isSelectMode = false
+            adapter.setSelectMode(isSelectMode)
+            adapter.notifyDataSetChanged()
             finish()
         }
     }

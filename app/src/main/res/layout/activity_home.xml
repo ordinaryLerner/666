@@ -93,8 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottommenu"
-        android:layout_below="@+id/line"
-        android:layout_marginBottom="-49dp" />
+        android:layout_below="@+id/line" />
 
     <TextView
         android:id="@+id/hint"
