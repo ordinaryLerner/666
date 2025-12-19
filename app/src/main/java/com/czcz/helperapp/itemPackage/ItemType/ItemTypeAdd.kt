@@ -36,15 +36,19 @@ class ItemTypeAdd : AppCompatActivity() {
                 Toast.makeText(this, "请填写类型", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
             val itemType = ItemType(
                 itemType = binding.typelayout.editText?.text.toString(),
                 username = currentusername
             )
+
             typedatabase = ItemTypeDatabase.getDatabase(this)
             typeDao = typedatabase.itemTypeDao()
+
             lifecycleScope.launch {
                 typeDao.insertItemType(itemType)
             }
+
             finish()
         }
 

@@ -61,16 +61,19 @@ class CompleteMessage : AppCompatActivity() {
 
                 lifecycleScope.launch {
                     val user = userDao.getUserByUsername(currentusername)
+
                     if(user != null) {
                         user.name = name
                         user.Aca_number = Aca_number
                         user.gender = gender
                         userDao.updateUser(user)
                     }
+
                     setResult(RESULT_OK)
                     finish()
             }
         }
+
         binding.cancel.setOnClickListener {
             finish()
         }

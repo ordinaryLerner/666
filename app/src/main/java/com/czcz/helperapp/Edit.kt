@@ -37,6 +37,7 @@ class Edit : AppCompatActivity() {
         binding.cancel.setOnClickListener {
             finish()
         }
+
         binding.complete.setOnClickListener {
             val password = binding.passwordedit.text.toString()
             val confirm = binding.confirmedit.text.toString()
@@ -48,23 +49,30 @@ class Edit : AppCompatActivity() {
                 password.isEmpty() -> {
                     binding.passwordlayout.error = "密码不能为空"
                 }
+
                 confirm.isEmpty() -> {
                     binding.confirmedit.error = "请再次输入密码"
                 }
+
                 password.isNotEmpty() && confirm.isNotEmpty() -> {
                     if (password == confirm) {
                         lifecycleScope.launch{
                             val user = userDao.getUserByUsername(currentusername)
                             val updateduser = user?.copy(password = password)
+
                             if (updateduser != null) {
                                 userDao.updateUser(updateduser)
                             }
+
                             val currentpassword = getSharedPreferences("currentpassword", MODE_PRIVATE)
                             currentpassword.edit().putString("currentpassword", password).apply()
                         }
+
                         Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show()
                         finish()
-                    } else {
+                    }
+
+                    else {
                         binding.confirmedit.error = "密码不一致"
                     }
                 }

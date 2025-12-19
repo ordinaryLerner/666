@@ -20,9 +20,11 @@ class Statement : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         binding.quit.setOnClickListener {
             startActivity(Intent(this, Mine::class.java))
             finish()
         }
+
     }
 }

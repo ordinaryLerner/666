@@ -76,6 +76,7 @@ class Register : AppCompatActivity() {
                         Toast.makeText(this@Register, "注册成功", Toast.LENGTH_SHORT).show()
                         typedatabase = ItemTypeDatabase.getDatabase(this@Register)
                         typeDao = typedatabase.itemTypeDao()
+
                         lifecycleScope.launch{
                             val defaultType = ItemType(
                                 itemType = "全部事项",
@@ -83,6 +84,7 @@ class Register : AppCompatActivity() {
                             )
                             typeDao.insertItemType(defaultType)
                         }
+
                         finish()
                     }
                 }
@@ -101,6 +103,7 @@ class Register : AppCompatActivity() {
                 binding.usernamelayout.error = null
             }
         }
+
         binding.quit.setOnClickListener {
             finish()
         }

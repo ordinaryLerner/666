@@ -23,10 +23,12 @@ class SplashActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         lifecycleScope.launch {
             delay(2000)
             startActivity(Intent(this@SplashActivity, Login::class.java))
             finish()
         }
+
     }
 }

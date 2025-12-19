@@ -117,6 +117,7 @@ class Login : AppCompatActivity() {
                                     dataeditor.putBoolean("remember", binding.remember.isChecked)
                                     dataeditor.apply()
                                 }
+
                                 startActivity(intent)
                                 finish()
                             }
@@ -126,11 +127,13 @@ class Login : AppCompatActivity() {
                             binding.wrong.visibility = TextView.VISIBLE
                         }
                     }
-                    if (remember)
+                    if (remember) {
                         dataeditor.putBoolean("remember", binding.remember.isChecked)
+                    }
 
-                    else
+                    else {
                         dataeditor.putBoolean("remember", false)
+                    }
 
                     dataeditor.putString("username", username)
                     dataeditor.putString("password", password)

@@ -32,6 +32,7 @@ class Mine : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         if(intent.getBooleanExtra("退出登录",false)){
             val intent = Intent(this, Login::class.java)
             intent.putExtra("跳过自动登录", true)
@@ -124,6 +125,7 @@ class Mine : AppCompatActivity() {
                         if (motto != user.motto) {
                             user.motto = motto
                             userDao.updateUser(user)
+
                             if (user.motto.isNullOrBlank())
                                 binding.mottotext.text = "未设置座右铭"
 
@@ -147,19 +149,28 @@ class Mine : AppCompatActivity() {
         super.onResume()
         lifecycleScope.launch {
             val user = userDao.getUserByUsername(currentusername)
-            if( user != null)
-            userDao.updateUser(user)
+
+            if( user != null) {
+                userDao.updateUser(user)
+            }
         }
     }
     //个人信息提醒
     private fun refreshUserInfo() {
     lifecycleScope.launch {
         val user = userDao.getUserByUsername(currentusername)
+
         if(user != null) {
-            if(user.name.isNullOrBlank()){binding.name.text = "未设置姓名"
-                binding.hello.visibility = TextView.INVISIBLE}
-            else{binding.name.text = user.name
-                binding.hello.visibility = TextView.VISIBLE}
+            if(user.name.isNullOrBlank()){
+                binding.name.text = "未设置姓名"
+                binding.hello.visibility = TextView.INVISIBLE
+            }
+
+            else{
+                binding.name.text = user.name
+                binding.hello.visibility = TextView.VISIBLE
+            }
+
             binding.AcaNumber.text = if (user.Aca_number.isNullOrBlank()) "未设置学号" else user.Aca_number
             binding.mottotext.text = if (user.motto.isNullOrBlank()) "未设置座右铭" else user.motto
         }

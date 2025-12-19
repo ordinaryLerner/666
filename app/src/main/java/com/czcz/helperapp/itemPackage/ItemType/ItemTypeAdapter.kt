@@ -47,26 +47,33 @@ class ItemTypeAdapter(
         with(holder.binding) {
             timeradapter = TimerItemAdapter(itemsList, holder.itemView.context)
             itemTypeText.text = itemType.itemType
+
             root.setOnClickListener {
                 onItemClick(itemType)
             }
+
             if(itemType.itemType != "全部事项"){
                 selectitems.visibility = View.VISIBLE
+
                 if (isDeleteMode) {
                     deletecheck.visibility = View.VISIBLE
                     deletecheck.setOnCheckedChangeListener { _, isChecked ->
                         if (isChecked) {
                             selectedItemTypes.add(itemType)
-                        } else {
+                        }
+
+                        else {
                             selectedItemTypes.remove(itemType)
                         }
                     }
                     root.setOnClickListener(null)//删除模式下取消点击事件,否则点击事件会触发两次
-                } else {
+                }
+                else {
                     deletecheck.visibility = View.GONE
                     deletecheck.setOnCheckedChangeListener(null)
                 }
             }
+
             selectitems.setOnClickListener {
                 val intent = Intent(holder.itemView.context, SelectItems::class.java)
                 intent.putExtra("itemType", itemType.itemType)

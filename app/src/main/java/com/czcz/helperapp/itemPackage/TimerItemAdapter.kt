@@ -34,23 +34,30 @@ class TimerItemAdapter(private val items: List<Item>, private val context: Conte
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+
         val currentusername = context.getSharedPreferences("currentusername", MODE_PRIVATE)
             .getString("currentusername", "") ?: ""
+
         val curType = context.getSharedPreferences("curType", MODE_PRIVATE)
             .getString("curType", "") ?: ""
+
         with(holder.binding) {
             description.text = item.description
+
             if(isSelectMode){
                 if(item.itemType == curType){
                     checkbox.isChecked = true
                 }
+
                 else{
                     checkbox.isChecked = false
                 }
             }
+
             else{
                 checkbox.isChecked = item.checkbox
             }
+
             checkbox.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked && isSelectMode == false) {
                     val intent = Intent(context, Complete::class.java)
@@ -58,11 +65,14 @@ class TimerItemAdapter(private val items: List<Item>, private val context: Conte
                     intent.putExtra("item_username", currentusername)
                     context.startActivity(Intent(intent))
                     }
+
                 else if(isSelectMode == true){
                     if (isChecked) {
                         selectedItems.add(item)
                         unselectedItems.remove(item)
-                    } else {
+                    }
+
+                    else {
                         unselectedItems.add(item)
                         selectedItems.remove(item)
                     }

@@ -254,6 +254,7 @@ class Timer : AppCompatActivity() {
                             binding.input1.tag = ""
                             isUpdatingText = false
                         }
+
                     }
                 }
             }

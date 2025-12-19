@@ -144,7 +144,9 @@ class ItemAdapter(
                 val timeDifference = date.time - currentTime
                 timeDifference <= 0
             }
-            else{false}
+            else{
+                false
+            }
 
         } catch (e: Exception) {
             false

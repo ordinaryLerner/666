@@ -34,6 +34,7 @@ class SelectItems : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
        adapter = TimerItemAdapter(itemsList, this@SelectItems)
        binding.recycler.adapter = adapter
        binding.recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@SelectItems)
@@ -57,6 +58,7 @@ class SelectItems : AppCompatActivity() {
             getSharedPreferences("curType", MODE_PRIVATE).edit {
                 putString("curType", curType)
             }
+
             lifecycleScope.launch {
                selectedItems.forEach {
                    if(it.itemType != curType) {
@@ -72,6 +74,7 @@ class SelectItems : AppCompatActivity() {
                     }
                 }
             }
+
             isSelectMode = false
             adapter.setSelectMode(isSelectMode)
             adapter.notifyDataSetChanged()

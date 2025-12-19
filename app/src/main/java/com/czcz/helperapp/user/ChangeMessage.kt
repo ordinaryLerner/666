@@ -36,6 +36,7 @@ class ChangeMessage : AppCompatActivity() {
 
         lifecycleScope.launch {
             val user = userDao.getUserByUsername(currentusername)
+
             if(user != null) {
                 binding.nameedit.setText(user.name)
                 binding.AcaNumberedit.setText(user.Aca_number)
@@ -88,6 +89,7 @@ class ChangeMessage : AppCompatActivity() {
                 }
             }
         }
+
         binding.cancel.setOnClickListener {
             finish()
         }

@@ -87,11 +87,13 @@ class Home : AppCompatActivity() {
                 curType = itemType
                 loadItemData()
             }
+
             adapter = typeadapter
             lifecycleScope.launch {
                 itemTypeList.addAll(typeDao.getAllItemTypesByUser(currentusername))
                 typeadapter.notifyDataSetChanged()
             }
+
             layoutManager = LinearLayoutManager(this@Home)
         }
 
@@ -118,14 +120,17 @@ class Home : AppCompatActivity() {
 
         binding.deleteconfirm.setOnClickListener {
             val selectdItemTypes = typeadapter.getSelectedItemTypes()
+
             if(selectdItemTypes.isNotEmpty()){
                 lifecycleScope.launch {
                    selectdItemTypes.forEach { itemType ->
                        typeDao.deleteItem(itemType.id)
                        }
+
                     kotlinx.coroutines.delay(100)
                     UpdateItem()
                 }
+
                 binding.typedelete.visibility = View.VISIBLE
                 binding.deleteconfirm.visibility = View.INVISIBLE
                 isDeleteMode = false
@@ -133,12 +138,14 @@ class Home : AppCompatActivity() {
                 loadItemTypeData()
                 loadItemData()
                 }
+
             else{
                 binding.typedelete.visibility = View.VISIBLE
                 binding.deleteconfirm.visibility = View.INVISIBLE
                 isDeleteMode = false
                 typeadapter.setDeleteMode(isDeleteMode)
             }
+
             quitload()
         }
 
@@ -184,6 +191,7 @@ class Home : AppCompatActivity() {
             }
             true
         }
+
         binding.more.setOnClickListener { view ->
             val popupMenu = android.widget.PopupMenu(this,view)
             popupMenu.menuInflater.inflate(R.menu.main, popupMenu.menu)
@@ -243,21 +251,26 @@ class Home : AppCompatActivity() {
     private fun loadItemData() {
         lifecycleScope.launch {
                 val items = itemDao.getAllItemsByUser(currentusername)
+
                 if(curType?.itemType == "全部事项"){
                     itemList.clear()
                     filterList = items
                     itemList.addAll(items)
                 }
+
                 else{
                     filterList = items.filter { item ->
                         item.itemType == curType?.itemType
                     }
                 }
+
                 itemList.clear()//清空列表
                 itemList.addAll(filterList)
+
             itemList.sortWith { item1, item2 ->
                 compareDateTime(item1.date, item2.date)
             }
+
             adapter.notifyDataSetChanged()//通知适配器数据已改变
             adapter.notifyItemRangeChanged(0, itemList.size)
             binding.typerecycler.adapter?.notifyDataSetChanged()
@@ -272,16 +285,19 @@ class Home : AppCompatActivity() {
             itemTypeList.clear()
             itemTypeList.addAll(itemTypes)
             val DefualtItemType = itemTypeList.find{it.itemType == "全部事项"}
+
             if(DefualtItemType == null){
                 val defaultType = ItemType(
                     itemType = "全部事项",
                     username = currentusername
                 )
+
                 typeDao.insertItemType(defaultType)
                 itemTypes = typeDao.getAllItemTypesByUser(currentusername)
                 itemTypeList.clear()
                 itemTypeList.addAll(itemTypes)
             }
+
             binding.typerecycler.adapter?.notifyDataSetChanged()
         }
     }
@@ -289,12 +305,14 @@ class Home : AppCompatActivity() {
     fun UpdateItem(){
         lifecycleScope.launch {
             val items = itemDao.getAllItemsByUser(currentusername)
+
             items.forEach { item ->
                 if(itemTypeList.find{it.itemType == item.itemType} ==  null){
                     val updateditem = item.copy(itemType = "全部事项")
                     itemDao.updateItem(updateditem)
                 }
             }
+
             loadItemData()
         }
     }
@@ -309,6 +327,7 @@ class Home : AppCompatActivity() {
         if (itemList.isEmpty()) {
             binding.hint.visibility = View.VISIBLE
         }
+
         else {
             binding.hint.visibility = View.GONE
         }

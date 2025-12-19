@@ -36,6 +36,7 @@ class ItemReminderWorker(appContext: Context, workerParams: WorkerParameters) : 
                 "Item Reminder",
                 NotificationManager.IMPORTANCE_HIGH
             )
+
             notificationManager.createNotificationChannel(channel)
         }
 
