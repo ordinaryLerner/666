@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.content.Intent
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -84,7 +85,7 @@ class Home : AppCompatActivity() {
                 itemsList=itemList){ itemType ->
                 binding.title.text = itemType.itemType
                 curType = itemType
-                filterItemsByType(itemType)
+                loadItemData()
             }
             adapter = typeadapter
             lifecycleScope.launch {
@@ -97,7 +98,6 @@ class Home : AppCompatActivity() {
         lifecycleScope.launch {
             val defaultType = typeDao.getItemTypeByType("全部事项")
             curType = defaultType
-            filterItemsByType(curType)
             loadItemData()
         }
 
@@ -199,11 +199,14 @@ class Home : AppCompatActivity() {
                         lifecycleScope.launch {
                             itemDao.deleteAllItems()
                         }
+                        Toast.makeText(this, "已清空所有事项", Toast.LENGTH_SHORT).show()
+                        loadItemData()
                         true
                     }
 
                     R.id.reload -> {
                         loadItemData()
+                        Toast.makeText(this, "已重新加载事项", Toast.LENGTH_SHORT).show()
                         true
                     }
                     else -> false
@@ -239,6 +242,17 @@ class Home : AppCompatActivity() {
     //重新加载数据
     private fun loadItemData() {
         lifecycleScope.launch {
+                val items = itemDao.getAllItemsByUser(currentusername)
+                if(curType?.itemType == "全部事项"){
+                    itemList.clear()
+                    filterList = items
+                    itemList.addAll(items)
+                }
+                else{
+                    filterList = items.filter { item ->
+                        item.itemType == curType?.itemType
+                    }
+                }
                 itemList.clear()//清空列表
                 itemList.addAll(filterList)
             itemList.sortWith { item1, item2 ->
@@ -300,30 +314,11 @@ class Home : AppCompatActivity() {
         }
     }
 
-    private fun filterItemsByType(itemType: ItemType?) {
-        lifecycleScope.launch {
-            val items = itemDao.getAllItemsByUser(currentusername)
-            if(itemType?.itemType == "全部事项"){
-                itemList.clear()
-                filterList = items
-                itemList.addAll(items)
-            }
-            else{
-                filterList = items.filter { item ->
-                    item.itemType == itemType?.itemType
-                }
-            }
-            judge()
-            loadItemData()
-        }
-
-    }
 
     //重新加载Home时刷新数据
     override fun onResume() {
         super.onResume()
         judge()
-        filterItemsByType(curType)
         loadItemData()
         loadItemTypeData()
     }
